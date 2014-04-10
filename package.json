@@ -1,0 +1,57 @@
+{
+  "name": "vista",
+  "version": "0.1.0",
+  "description": "Really easy, CSS-based, location-driven display control for your elements.",
+  "title": "Vista",
+  "homepage": "https://github.com/esha/vista",
+  "author": {
+    "name": "ESHA Research",
+    "email": "nathan@esha.com",
+    "url": "http://www.esha.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/esha/vista.git"
+  },
+  "bugs": {
+    "url": "https://github.com/esha/vista/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/esha/vista/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "dist/vista.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt jshint qunit --verbose"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-contrib-qunit": "~0.3.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.5",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-compress": "~0.5.2",
+    "grunt-cli": "~0.1.9",
+    "grunt": "~0.4.4"
+  },
+  "keywords": [
+    "css",
+    "location",
+    "show",
+    "hide",
+    "view",
+    "vista",
+    "javascript",
+    "active",
+    "element",
+    "visibility",
+    "class"
+  ]
+}

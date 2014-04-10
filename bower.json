@@ -1,0 +1,39 @@
+{
+  "name": "vista",
+  "version": "0.1.0",
+  "homepage": "https://github.com/esha/vista",
+  "authors": [
+    "ESHA Research <nathan@esha.com>"
+  ],
+  "description": "Really easy, CSS-based, location-driven display control for your elements.",
+  "main": "dist/vista.min.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "css",
+    "location",
+    "show",
+    "hide",
+    "view",
+    "vista",
+    "javascript",
+    "active",
+    "element",
+    "visibility",
+    "class"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ],
+  "devDependencies": {
+    "eventi": "^1.0.2",
+    "qunit": "~1.14.0"
+  }
+}

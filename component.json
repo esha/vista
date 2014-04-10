@@ -1,0 +1,26 @@
+{
+  "name": "vista",
+  "repo": "esha/vista",
+  "version": "0.1.0",
+  "keywords": [
+    "css",
+    "location",
+    "show",
+    "hide",
+    "view",
+    "vista",
+    "javascript",
+    "active",
+    "element",
+    "visibility",
+    "class"
+  ],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "src/component.js",
+  "scripts": [
+    "src/component.js",
+    "dist/vista.js"
+  ]
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="vista" content="index hash=#hash re=/(index.html)?#?$"/>
+  <title>Vista Test Suite</title>
+  <!-- Load local QUnit. -->
+  <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" media="screen">
+  <script src="../bower_components/qunit/qunit/qunit.js"></script>
+  <!-- Load local lib and tests. -->
+  <script src="phantomShim.js"></script>
+  <script src="../dist/vista.js"></script>
+  <script src="test.js"></script>
+</head>
+<body>
+  <div id="qunit">
+  </div>
+  <div id="qunit-fixture">
+    <div class="show-index">show-index</div>
+    <div class="show-hash">show-hash</div>
+    <div class="show-re">show-re</div>
+    <div class="hide-index">hide-index</div>
+    <div class="hide-hash">hide-hash</div>
+    <div class="hide-re">hide-re</div>
+  </div>
+</body>
+</html>
