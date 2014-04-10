@@ -18,4 +18,4 @@ Download the [production version][min] or the [development version][max]. [![Bui
 ## Release History
 * 2014-04-10 [v0.1.0][] (first public release)
 
-[v0.5.0]: https://github.com/esha/vista/tree/0.1.0
+[v0.1.0]: https://github.com/esha/vista/tree/0.1.0
