@@ -1,4 +1,4 @@
-/*! Vista - v0.1.0 - 2014-04-10
+/*! Vista - v0.1.0 - 2014-04-11
 * https://github.com/esha/vista
 * Copyright (c) 2014 ESHA Research; Licensed MIT */
 (function(window, document, location, Eventi) {
@@ -40,7 +40,7 @@
                  ', .'+name+'-vista ')+'.show-'+name+' { display: inline-block !important; }\n';
         },
         update: function() {
-            var url = location.pathname + location.search + location.hash,
+            var url = location+'',
                 start = true;
             _._list.forEach(function(vista) {
                 var show = vista.test(url);

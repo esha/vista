@@ -37,7 +37,7 @@
                  ', .'+name+'-vista ')+'.show-'+name+' { display: inline-block !important; }\n';
         },
         update: function() {
-            var url = location.pathname + location.search + location.hash,
+            var url = location+'',
                 start = true;
             _._list.forEach(function(vista) {
                 var show = vista.test(url);
