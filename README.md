@@ -49,7 +49,7 @@ Vista.define('special', function(url) {
 
 To show an element only when the test passes:  
 
-`class="view-{name}"`
+`class="show-{name}"`
 
 or hide an element only when a test passes:
 
@@ -59,7 +59,7 @@ The needed CSS rules are generated and applied automatically for you. There's no
 
 ```html
 <body>
-  <div class="view-reports">
+  <div class="show-reports">
     Reports would go here, of course.
   </div>
   <!-- hide the submenu to make more room for the chart -->
