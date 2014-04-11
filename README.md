@@ -32,7 +32,7 @@ The name will be used to generate the CSS display rules. The test will be turned
 Vista.define('reports');
 Vista.define('hasChart', /#.*(pie|bar|line)/);
 Vista.define('special', function(url) {
-    // here you can 
+    // return a truthy value to pass the test or falsey to fail
     return url.indexOf('special=true') > 0 || user.settings('special');
 });
 ```
