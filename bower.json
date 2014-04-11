@@ -1,11 +1,11 @@
 {
   "name": "vista",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "Really easy, CSS-based, location-driven display control for your elements.",
   "homepage": "https://github.com/esha/vista",
   "authors": [
     "ESHA Research <nathan@esha.com>"
   ],
-  "description": "Really easy, CSS-based, location-driven display control for your elements.",
   "main": "dist/vista.min.js",
   "moduleType": [
     "amd",

@@ -93,5 +93,7 @@ Note that this last one will only affect *subsequent* definitions.
 
 ## Release History
 * 2014-04-10 [v0.1.0][] (first public release)
+* 2014-04-11 [v0.1.1][] (test full location, add some documentation)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
+[v0.1.1]: https://github.com/esha/vista/tree/0.1.1
