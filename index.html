@@ -3,18 +3,19 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Vista by esha</title>
+    <title>Vista - ESHA Research</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="vista" content="test">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
   <body>
     <div class="wrapper">
-      <header>
+      <header class="hide-test">
         <h1>Vista</h1>
         <p>Really easy, CSS-based, location-driven display control for your elements.</p>
 
@@ -28,7 +29,7 @@
         </ul>
       </header>
       <section>
-        <p>Vista gives you automatic, responsive control of element display via the current location.</p>
+        <p>Vista gives you automatic, declarative control of element display via the current location.</p>
 
 <p>If you are developing a single-page application (of any degree of complexity), you are (or should be) updating the browser's location bar  when there is a significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). Such updates typically involve the showing or hiding of one or many elements.
 This activity is typically a subtask of fancy "routers" and "view managers" or even custom elements that hide/show themselves, often abstracting or encapsulating the simple on/off of elements unnecessarily and sometimes, obnoxiously.</p>
@@ -122,7 +123,7 @@ This activity is typically a subtask of fancy "routers" and "view managers" or e
 </ul>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/esha">esha</a></p>
+        <p>This project is maintained by <a href="https://github.com/esha">ESHA Research, Inc</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
@@ -137,6 +138,6 @@ This activity is typically a subtask of fancy "routers" and "view managers" or e
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
-
+    <script src="bower_components/vista/dist/vista.min.js"></script>
   </body>
 </html>
