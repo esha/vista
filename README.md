@@ -1,11 +1,10 @@
 # Vista
 
-Vista gives you automatic, responsive control of element display via the current location.
+Vista gives you automatic, declarative, location-based control of element display.
 
-If you are developing a single-page application (of any degree of complexity), you are (or should be) updating the browser's location bar  when there is a significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). Such updates typically involve the showing or hiding of one or many elements.
-This activity is typically a subtask of fancy "routers" and "view managers" or even custom elements that hide/show themselves, often abstracting or encapsulating the simple on/off of elements unnecessarily and sometimes, obnoxiously.
+If you are developing a single-page application (of any degree of complexity), you should be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). This generally coincides with showing and hiding of page elements, usually a subtask of "routers" and "view managers". Such approaches needlessly bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.
 
-Vista keeps it simple. One little library to apply tests to the location when it changes and toggle the associated classes accordingly. You just declare the tests (`<meta name="vista" content="name=regexp"/>` or `Vista.define(name, regExpOrFn)`) and stick `show-{name}` or `hide-{name}` classes on your elements. Everything else is handled automatically. No concerns about view/element heirarchy or containers. No manual visibility toggling. No CSS rules to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. See below for the documentation, if you even need it. :)
+Vista makes "view management" simple, declarative, and decoupled. You need only define the tests (`<meta name="vista" content="name=regexp"/>` or `Vista.define(name, regExpOrFn)`) and stick `show-{name}` or `hide-{name}` classes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.
 
 ## Getting Started
 Download the [production version][min] or the [development version][max]. [![Build Status](https://travis-ci.org/esha/vista.png?branch=master)](https://travis-ci.org/esha/vista)  
@@ -75,7 +74,7 @@ The needed CSS rules are generated and applied automatically for you. Here are s
 </body>
 ```
 
-### Advanced
+### "Advanced" Use
 
 To force immediate evaluation of all test statuses (i.e. after you define new ones, but before a url change):
 
@@ -85,15 +84,19 @@ To temporarily force a particular status (i.e. override the latest update):
 
 `Vista.toggle(name[, active]);`
 
-To add additional elements that should be `display: inline-block;` instead of `display: block;`:
+To add additional elements that should be `display: inline-block;` instead of `display: block;` for *subsequent* definitions:
 
 `Vista.inline.push('x-inline-element');`
 
-Note that this last one will only affect *subsequent* definitions.
+Write CSS rules that use the ".vista-{name}" classes toggled on the document body as the location changes:
+
+`.vista-{name} .my-thing { ... }`
 
 ## Release History
 * 2014-04-10 [v0.1.0][] (first public release)
 * 2014-04-11 [v0.1.1][] (test full location, add some documentation)
+* 2014-04-16 [v0.2.0][] (flip toggle classes to vista-{name})
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
+[v0.2.0]: https://github.com/esha/vista/tree/0.2.0
