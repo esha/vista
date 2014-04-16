@@ -1,19 +1,31 @@
-/*! Vista - v0.1.1 - 2014-04-11
+/*! Vista - v0.2.0 - 2014-04-16
 * https://github.com/esha/vista
 * Copyright (c) 2014 ESHA Research; Licensed MIT */
-(function(window, document, location, Eventi) {
+(function(window, document, location, history) {
     'use strict';
 
-    var init = function Vista() {
+    var init = function() {
         init = false;
+
         _._list = [];
+
         _.style = document.createElement('style');
         document.head.appendChild(_.style);
-        Eventi.on(_, 'location', _.update);
+
+        window.addEventListener('hashchange', _.update);
+        window.addEventListener('popstate', _.update);
+        _._pushState = history.pushState;
+        history.pushState = function() {
+            var ret = _._pushState.apply(this, arguments);
+            _.update();
+            return ret;
+        };
+
         _.define('start');
+        _.update();
     },
     _ = {
-        version: '<%= pkg.version %>',
+        version: '0.2.0',
         define: function(name, test) {
             if (init) {
                 init();
@@ -34,10 +46,10 @@
         inline: 'span a input button select label img'.split(' '),
         rules: function(name) {
             return '.show-'+name+
-                 ', .'+name+'-vista .hide-'+name+' { display: none !important; }\n'+
-                   '.'+name+'-vista .show-'+name+' { display: block !important; }\n'+
-                   '.'+name+'-vista '+_.inline.join('.show-'+name+
-                 ', .'+name+'-vista ')+'.show-'+name+' { display: inline-block !important; }\n';
+                 ', .vista-'+name+' .hide-'+name+' { display: none !important; }\n'+
+                   '.vista-'+name+' .show-'+name+' { display: block !important; }\n'+
+                   '.vista-'+name+' '+_.inline.join('.show-'+name+
+                 ', .vista-'+name+' ')+'.show-'+name+' { display: inline-block !important; }\n';
         },
         update: function() {
             var url = location+'',
@@ -52,7 +64,7 @@
             _.toggle('start', start);
         },
         toggle: function(name, active) {
-            document.documentElement.classList[active ? 'add' : 'remove'](name+'-vista');
+            document.documentElement.classList[active ? 'add' : 'remove']('vista-'+name);
         }
     };
 
@@ -69,17 +81,4 @@
     var define = window.define || function(){};
     define((window.exports||window).Vista = _);
 
-})(window, document, window.location, window.Eventi || {
-    on: function(o,t, fn) {
-        var w = window, h = w.history;
-        w.addEventListener('hashchange', fn);
-        w.addEventListener('popstate', fn);
-        h._pushState = h.pushState;
-        h.pushState = function() {
-            var ret = h._pushState.apply(this, arguments);
-            fn();
-            return ret;
-        };
-        fn();
-    }
-});
+})(window, document, window.location, window.history);
