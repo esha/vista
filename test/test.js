@@ -60,7 +60,7 @@
     expect(Vista.inline.length);
     var css = Vista.rules('rule');
     Vista.inline.forEach(function(el) {
-      ok(css.indexOf('.rule-vista '+el+'.show-rule') > 0);
+      ok(css.indexOf('.vista-rule '+el+'.show-rule') > 0);
     });
   });
 
@@ -80,13 +80,13 @@
 
   test('Vista.toggle', function() {
     var classes = document.documentElement.classList;
-    equal(classes.contains('test-vista'), false);
+    equal(classes.contains('vista-test'), false);
     Vista.toggle('test', true);
-    equal(classes.contains('test-vista'), true);
+    equal(classes.contains('vista-test'), true);
     Vista.toggle('test', true);
-    equal(classes.contains('test-vista'), true);
+    equal(classes.contains('vista-test'), true);
     Vista.toggle('test', false);
-    equal(classes.contains('test-vista'), false);
+    equal(classes.contains('vista-test'), false);
   });
 
   test('meta-tag definitions', function() {
