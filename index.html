@@ -8,19 +8,17 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta name="vista" content="test">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
   <body>
     <div class="wrapper">
-      <header class="hide-test">
+      <header>
         <h1>Vista</h1>
         <p>Really easy, CSS-based, location-driven display control for your elements.</p>
 
         <p class="view"><a href="https://github.com/esha/vista">View the Project on GitHub <small>esha/vista</small></a></p>
-
 
         <ul>
           <li><a href="https://github.com/esha/vista/zipball/master">Download <strong>ZIP File</strong></a></li>
@@ -28,20 +26,23 @@
           <li><a href="https://github.com/esha/vista">View On <strong>GitHub</strong></a></li>
         </ul>
 
-        <p><a href="http://jsbin.com/komerire/10/edit?html,output">Try it out in JSBin!</a></p>
+        <p>
+          A Little Demo
+          <a class="jsbin-embed" href="http://jsbin.com/komerire/13/embed?output">Vista Demo</a>
+          <script src="http://static.jsbin.com/js/embed.js"></script></script>
+        </p>
       </header>
       <section>
-        <p>Vista gives you automatic, declarative control of element display via the current location.</p>
+        <p>Vista gives you automatic, declarative, location-based control of element display.</p>
 
-<p>If you are developing a single-page application (of any degree of complexity), you are (or should be) updating the browser's location bar  when there is a significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). Such updates typically involve the showing or hiding of one or many elements.
-This activity is typically a subtask of fancy "routers" and "view managers" or even custom elements that hide/show themselves, often abstracting or encapsulating the simple on/off of elements unnecessarily and sometimes, obnoxiously.</p>
+<p>If you are developing a single-page application (of any degree of complexity), you should be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). This generally coincides with showing and hiding of page elements, usually a subtask of "routers" and "view managers". Such approaches needlessly bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.</p>
 
-<p>Vista keeps it simple. One little library to apply tests to the location when it changes and toggle the associated classes accordingly. You just declare the tests (<code>&lt;meta name="vista" content="name=regexp"/&gt;</code> or <code>Vista.define(name, regExpOrFn)</code>) and stick <code>show-{name}</code> or <code>hide-{name}</code> classes on your elements. Everything else is handled automatically. No concerns about view/element heirarchy or containers. No manual visibility toggling. No CSS rules to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. See below for the documentation, if you even need it. :)</p>
+<p>Vista makes "view management" simple, declarative, and decoupled. You need only define the tests (<code>&lt;meta name="vista" content="name=regexp"/&gt;</code> or <code>Vista.define(name, regExpOrFn)</code>) and stick <code>show-{name}</code> or <code>hide-{name}</code> classes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.</p>
 
 <h2>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
 
-<p>Download the <a href="https://raw.github.com/esha/vista/master/dist/vista.min.js">production version</a> or the <a href="https://raw.github.com/esha/vista/master/dist/vista.js">development version</a>. <a href="https://travis-ci.org/esha/vista"><img src="https://travis-ci.org/esha/vista.png?branch=master" alt="Build Status"></a><br><a href="http://bower.io/">Bower</a>: <code>bower install vista</code><br><a href="https://npmjs.org/package/vista">NPM</a>: <code>npm install vista</code><br><a href="http://component.io/">Component</a>: <code>component install esha/vista</code>  </p>
+<p>Download the <a href="https://rawgit.com/esha/vista/master/dist/vista.min.js">production version</a> or the <a href="https://raw.github.com/esha/vista/master/dist/vista.js">development version</a>. <a href="https://travis-ci.org/esha/vista"><img src="https://travis-ci.org/esha/vista.png?branch=master" alt="Build Status"></a><br><a href="http://bower.io/">Bower</a>: <code>bower install vista</code><br><a href="https://npmjs.org/package/vista">NPM</a>: <code>npm install vista</code><br><a href="http://component.io/">Component</a>: <code>component install esha/vista</code>  </p>
 
 <h2>
 <a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
@@ -100,21 +101,23 @@ This activity is typically a subtask of fancy "routers" and "view managers" or e
 </pre></div>
 
 <h3>
-<a name="advanced" class="anchor" href="#advanced"><span class="octicon octicon-link"></span></a>Advanced</h3>
+<a name="advanced" class="anchor" href="#advanced"><span class="octicon octicon-link"></span></a>"Advanced" Use</h3>
 
-<p>To force immediate evaluation of all test statuses (i.e. after you define new ones, but before a url change):</p>
+<p>Force immediate evaluation of all test statuses (i.e. after you define new ones, but before a url change):</p>
 
 <p><code>Vista.update();</code></p>
 
-<p>To temporarily force a particular status (i.e. override the latest update):</p>
+<p>Temporarily force a particular status (i.e. override the latest update):</p>
 
 <p><code>Vista.toggle(name[, active]);</code></p>
 
-<p>To add additional elements that should be <code>display: inline-block;</code> instead of <code>display: block;</code>:</p>
+<p>Add additional elements that should be <code>display: inline-block;</code> instead of <code>display: block;</code> for <em>subsequent</em> definitions:</p>
 
 <p><code>Vista.inline.push('x-inline-element');</code></p>
 
-<p>Note that this last one will only affect <em>subsequent</em> definitions.</p>
+<p>Write CSS rules that use the ".vista-{name}" classes toggled on the document body as the location changes:</p>
+
+<p><code>.vista-{name} .my-thing { ... }</code></p>
 
 <h2>
 <a name="release-history" class="anchor" href="#release-history"><span class="octicon octicon-link"></span></a>Release History</h2>
@@ -122,6 +125,7 @@ This activity is typically a subtask of fancy "routers" and "view managers" or e
 <ul>
 <li>2014-04-10 <a href="https://github.com/esha/vista/tree/0.1.0">v0.1.0</a> (first public release)</li>
 <li>2014-04-11 <a href="https://github.com/esha/vista/tree/0.1.1">v0.1.1</a> (test full location, add some documentation)</li>
+<li>2014-04-16 <a href="https://github.com/esha/vista/tree/0.2.0">v0.2.0</a> (flip toggle classes to vista-{name})</li>
 </ul>
       </section>
       <footer>
@@ -130,16 +134,15 @@ This activity is typically a subtask of fancy "routers" and "view managers" or e
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-42479338-3");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
-    <script src="javascripts/vista.min.js"></script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-42479338-3");
+      pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
   </body>
 </html>
