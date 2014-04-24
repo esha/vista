@@ -1,4 +1,4 @@
-/*! Vista - v0.2.0 - 2014-04-24
+/*! Vista - v0.2.1 - 2014-04-24
 * https://github.com/esha/vista
 * Copyright (c) 2014 ESHA Research; Licensed MIT */
 (function(window, document, location, history) {
@@ -29,7 +29,7 @@
         _.update();
     },
     _ = {
-        version: '0.2.0',
+        version: '0.2.1',
         define: function(name, test) {
             if (init) {
                 init();

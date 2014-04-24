@@ -96,7 +96,9 @@ Write CSS rules that use the ".vista-{name}" classes toggled on the document bod
 * 2014-04-10 [v0.1.0][] (first public release)
 * 2014-04-11 [v0.1.1][] (test full location, add some documentation)
 * 2014-04-16 [v0.2.0][] (flip toggle classes to vista-{name})
+* 2014-04-24 [v0.2.1][] (watch replaceState calls)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
 [v0.2.0]: https://github.com/esha/vista/tree/0.2.0
+[v0.2.1]: https://github.com/esha/vista/tree/0.2.1
