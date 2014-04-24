@@ -1,4 +1,4 @@
-/*! Vista - v0.2.0 - 2014-04-16
+/*! Vista - v0.2.0 - 2014-04-24
 * https://github.com/esha/vista
 * Copyright (c) 2014 ESHA Research; Licensed MIT */
 (function(window, document, location, history) {
@@ -14,12 +14,16 @@
 
         window.addEventListener('hashchange', _.update);
         window.addEventListener('popstate', _.update);
-        _._pushState = history.pushState;
-        history.pushState = function() {
-            var ret = _._pushState.apply(this, arguments);
-            _.update();
-            return ret;
+        var intercept = function(name) {
+            var fn = _['_'+name] = history[name];
+            history[name] = function() {
+                var ret = fn.apply(this, arguments);
+                _.update();
+                return ret;
+            };
         };
+        intercept('pushState');
+        intercept('replaceState');
 
         _.define('start');
         _.update();

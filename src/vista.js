@@ -11,12 +11,16 @@
 
         window.addEventListener('hashchange', _.update);
         window.addEventListener('popstate', _.update);
-        _._pushState = history.pushState;
-        history.pushState = function() {
-            var ret = _._pushState.apply(this, arguments);
-            _.update();
-            return ret;
+        var intercept = function(name) {
+            var fn = _['_'+name] = history[name];
+            history[name] = function() {
+                var ret = fn.apply(this, arguments);
+                _.update();
+                return ret;
+            };
         };
+        intercept('pushState');
+        intercept('replaceState');
 
         _.define('start');
         _.update();
