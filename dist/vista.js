@@ -1,4 +1,4 @@
-/*! Vista - v0.2.1 - 2014-04-24
+/*! Vista - v1.0.0 - 2014-08-25
 * https://github.com/esha/vista
 * Copyright (c) 2014 ESHA Research; Licensed MIT */
 (function(window, document, location, history) {
@@ -29,7 +29,7 @@
         _.update();
     },
     _ = {
-        version: '0.2.1',
+        version: '1.0.0',
         define: function(name, test) {
             if (init) {
                 init();
@@ -69,17 +69,25 @@
         },
         toggle: function(name, active) {
             document.documentElement.classList[active ? 'add' : 'remove']('vista-'+name);
+        },
+        config: function() {
+            var meta = document.querySelectorAll('meta[itemprop=vista]');
+            for (var i=0,m=meta.length; i<m; i++) {
+                var el = meta[i],
+                    definitions = (el.getAttribute('define')||'').split(' ');
+                for (var j=0,n=definitions.length; j<n; j++) {
+                    _.define.apply(_, definitions[j].split('='));
+                }
+                el.setAttribute('itemprop', definitions.length ? 'vista-done' : 'vista-fail');
+            }
+            if (meta.length) {
+                _.update();
+            }
         }
     };
 
-    var meta = document.querySelector('meta[name=vista]');
-    if (meta) {
-        var definitions = meta.getAttribute('content') || '';
-        definitions.split(' ').forEach(function(definition) {
-            _.define.apply(_, definition.split('='));
-        });
-        _.update();
-    }
+    _.config();
+    document.addEventListener('DOMContentLoaded', _.config);
 
     // export Vista (AMD, commonjs, or window)
     var define = window.define || function(){};
