@@ -43,7 +43,7 @@ Vista.define('special', function(url) {
 
 ```html
 <head>
-  <meta itemprop="vista" content="reports hasChart=#(pie|bar|line) query=\?q=.+"/>
+  <meta itemprop="vista" define="reports hasChart=#(pie|bar|line) query=\?q=.+"/>
   <script src="../bower_components/vista/dist/vista.min.js"></script>
 </head>
 ...
