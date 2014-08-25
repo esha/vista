@@ -89,7 +89,7 @@
     equal(classes.contains('vista-test'), false);
   });
 
-  test('meta-tag definitions', function() {
+  test('head meta-tag definitions', function() {
     var show = document.querySelector('.show-index'),
         hide = document.querySelector('.hide-index');
     ok(visible(show));
@@ -102,9 +102,11 @@
     location.hash = 'hash';
     ok(visible(show));
     ok(!visible(hide));
+  });
 
-    show = document.querySelector('.show-re');
-    hide = document.querySelector('.hide-re');
+  test('body meta-tag definitions', function() {
+    var show = document.querySelector('.show-re'),
+        hide = document.querySelector('.hide-re');
     ok(!visible(show));
     ok(visible(hide));
     location.hash = '';

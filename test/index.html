@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="vista" content="index hash=#hash re=/(index.html)?#?$"/>
+  <meta itemprop="vista" define="index hash=#hash"/>
   <title>Vista Test Suite</title>
   <!-- Load local QUnit. -->
   <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" media="screen">
@@ -16,6 +16,7 @@
   <div id="qunit">
   </div>
   <div id="qunit-fixture">
+    <meta itemprop="vista" define="re=/(index.html)?#?$"/>
     <div class="show-index">show-index</div>
     <div class="show-hash">show-hash</div>
     <div class="show-re">show-re</div>
