@@ -37,7 +37,7 @@
 
 <p>If you are developing a single-page application (of any degree of complexity), you should be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). This generally coincides with showing and hiding of page elements, usually a subtask of "routers" and "view managers". Such approaches needlessly bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.</p>
 
-<p>Vista makes "view management" simple, declarative, and decoupled. You need only define the tests (<code>&lt;meta name="vista" content="name=regexp"/&gt;</code> or <code>Vista.define(name, regExpOrFn)</code>) and stick <code>show-{name}</code> or <code>hide-{name}</code> classes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.</p>
+<p>Vista makes "view management" simple, declarative, and decoupled. You need only define the tests (<code>&lt;meta itemprop="vista" define="name=regexp"/&gt;</code> or <code>Vista.define(name, regExpOrFn)</code>) and stick <code>show-{name}</code> or <code>hide-{name}</code> classes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.</p>
 
 <h2>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
@@ -52,7 +52,7 @@
 
 <p>Declarative (best way):  </p>
 
-<p><code>&lt;meta name="vista" content="name=test otherName=otherTest nameAsTest"&gt;</code>  </p>
+<p><code>&lt;meta itemprop="vista" define="name=test otherName=otherTest nameAsTest"&gt;</code>  </p>
 
 <p>Programmatic (when you need to):  </p>
 
@@ -127,6 +127,7 @@
 <li>2014-04-11 <a href="https://github.com/esha/vista/tree/0.1.1">v0.1.1</a> (test full location, add some documentation)</li>
 <li>2014-04-16 <a href="https://github.com/esha/vista/tree/0.2.0">v0.2.0</a> (flip toggle classes to vista-{name})</li>
 <li>2014-04-24 <a href="https://github.com/esha/vista/tree/0.2.1">v0.2.1</a> (watch replaceState calls)</li>
+<li>2014-08-25 <a href="https://github.com/esha/vista/tree/1.0.0">v1.0.0</a> (multiple &lt;meta itemprop="vista" define="... instead of single &lt;meta name="vista" content...)</li>
 </ul>
       </section>
       <footer>
