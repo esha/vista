@@ -84,6 +84,10 @@ To temporarily force a particular status (i.e. override the latest update):
 
 `Vista.toggle(name[, active]);`
 
+To test whether a particular status is active or not:
+
+`Vista.active(name);`
+
 To add additional elements that should be `display: inline-block;` instead of `display: block;` for *subsequent* definitions:
 
 `Vista.inline.push('x-inline-element');`
@@ -98,9 +102,11 @@ Write CSS rules that use the ".vista-{name}" classes toggled on the document bod
 * 2014-04-16 [v0.2.0][] (flip toggle classes to vista-{name})
 * 2014-04-24 [v0.2.1][] (watch replaceState calls)
 * 2014-08-25 [v1.0.0][] (multiple <meta itemprop="vista" define="... instead of single <meta name="vista" content...)
+* 2014-09-23 [v1.1.0][] (Vista.active(name), toggle fix)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
 [v0.2.0]: https://github.com/esha/vista/tree/0.2.0
 [v0.2.1]: https://github.com/esha/vista/tree/0.2.1
 [v1.0.0]: https://github.com/esha/vista/tree/1.0.0
+[v1.1.0]: https://github.com/esha/vista/tree/1.1.0

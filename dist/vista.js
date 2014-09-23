@@ -1,4 +1,4 @@
-/*! Vista - v1.0.0 - 2014-08-25
+/*! Vista - v1.1.0 - 2014-09-23
 * https://github.com/esha/vista
 * Copyright (c) 2014 ESHA Research; Licensed MIT */
 (function(window, document, location, history) {
@@ -28,8 +28,9 @@
         _.define('start');
         _.update();
     },
+    classes = document.documentElement.classList,
     _ = {
-        version: '1.0.0',
+        version: '1.1.0',
         define: function(name, test) {
             if (init) {
                 init();
@@ -67,8 +68,12 @@
             });
             _.toggle('start', start);
         },
+        active: function(name) {
+            return classes.contains('vista-'+name);
+        },
         toggle: function(name, active) {
-            document.documentElement.classList[active ? 'add' : 'remove']('vista-'+name);
+            active = active === undefined ? !_.active(name) : active;
+            classes[active ? 'add' : 'remove']('vista-'+name);
         },
         config: function() {
             var meta = document.querySelectorAll('meta[itemprop=vista]');
