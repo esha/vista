@@ -25,6 +25,7 @@
         _.define('start');
         _.update();
     },
+    classes = document.documentElement.classList,
     _ = {
         version: '<%= pkg.version %>',
         define: function(name, test) {
@@ -64,8 +65,12 @@
             });
             _.toggle('start', start);
         },
+        active: function(name) {
+            return classes.contains('vista-'+name);
+        },
         toggle: function(name, active) {
-            document.documentElement.classList[active ? 'add' : 'remove']('vista-'+name);
+            active = active === undefined ? !_.active(name) : active;
+            classes[active ? 'add' : 'remove']('vista-'+name);
         },
         config: function() {
             var meta = document.querySelectorAll('meta[itemprop=vista]');

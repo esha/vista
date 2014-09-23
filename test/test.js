@@ -35,6 +35,7 @@
     equal(typeof Vista.rules, "function", "Vista.rules");
     equal(typeof Vista.update, "function", "Vista.update");
     equal(typeof Vista.toggle, "function", "Vista.toggle");
+    equal(typeof Vista.active, "function", "Vista.active");
   });
 
   test('Vista.define', function() {
@@ -87,6 +88,21 @@
     equal(classes.contains('vista-test'), true);
     Vista.toggle('test', false);
     equal(classes.contains('vista-test'), false);
+    Vista.toggle('test');
+    equal(classes.contains('vista-test'), true);
+    Vista.toggle('test');
+    equal(classes.contains('vista-test'), false);
+  });
+
+  test('Vista.active', function() {
+    var classes = document.documentElement.classList;
+    Vista.toggle('test', true);
+    var active = Vista.active('test');
+    equal(typeof active, "boolean");
+    ok(active, 'should be active');
+    equal(active, classes.contains('vista-test'));
+    Vista.toggle('test', false);
+    ok(!Vista.active('test'));
   });
 
   test('head meta-tag definitions', function() {
