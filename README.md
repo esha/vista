@@ -4,7 +4,7 @@ Vista gives you automatic, declarative, location-based control of element displa
 
 If you are developing a single-page application (of any degree of complexity), you should be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). This generally coincides with showing and hiding of page elements, usually a subtask of "routers" and "view managers". Such approaches needlessly bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.
 
-Vista makes "view management" simple, declarative, and decoupled. You need only define the tests (`<meta itemprop="vista" define="name=regexp"/>` or `Vista.define(name, regExpOrFn)`) and stick `show-{name}` or `hide-{name}` classes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.
+Vista makes "view management" simple, declarative, decoupled, and very fast. You need only define the tests (`<meta itemprop="vista" define="name=regexp"/>` or `Vista.define(name, regExpOrFn)`) and stick `vista="{name}"` or `vista="!{name}"` attributes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.
 
 ## Getting Started
 Download the [production version][min] or the [development version][max]. [![Build Status](https://travis-ci.org/esha/vista.png?branch=master)](https://travis-ci.org/esha/vista)  
@@ -24,11 +24,12 @@ Download the [production version][min] or the [development version][max]. [![Bui
 
 Declarative (best way):  
 
-`<meta itemprop="vista" define="name=test otherName=otherTest nameAsTest">`  
+`<meta itemprop="vista" define="name=test name2=test2 nameIsTest">`  
+`<meta itemprop="vista" define="special=\?layout=grid" style="flex">`  
 
 Programmatic (when you need to):  
 
-`Vista.define(name[, test])`  
+`Vista.define(name[, test[, style]])`  
 
 The name will be used to generate the pertinent CSS display styles. The test will be turned into a regular expression that is tested against the current URL of the page. Or, if you are using `Vista.define(name, test)`, the test may be a RegExp instance or Function. If, via either definition method, the test is omitted, then the name itself will be used as the test expression (which is often sufficient). Here are some definition examples:
 
@@ -38,7 +39,7 @@ Vista.define('hasChart', /#.*(pie|bar|line)/);
 Vista.define('special', function(url) {
     // return a truthy value to pass the test or falsey to fail
     return url.indexOf('special=true') > 0 || user.settings('special');
-});
+}, 'inline-block');
 ```
 
 ```html
@@ -53,21 +54,21 @@ Vista.define('special', function(url) {
 
 To show an element only when the test passes:  
 
-`class="show-{name}"`
+`vista="{name}"`
 
 or hide an element only when a test passes:
 
-`class="hide-{name}"`
+`vista="!{name}"`
 
 The needed CSS rules are generated and applied automatically for you. Here are some usage examples:
 
 ```html
 <body>
-  <div class="show-reports">
+  <div vista="reports">
     Reports would go here, of course.
   </div>
   <!-- hide the submenu to make more room for the chart -->
-  <div id="submenu" class="hide-hasChart">
+  <div id="submenu" vista="!hasChart">
     Sub-menu is here...
   </div>
   ...
@@ -92,9 +93,9 @@ To add additional elements that should be `display: inline-block;` instead of `d
 
 `Vista.inline.push('x-inline-element');`
 
-Write CSS rules that use the ".vista-{name}" classes toggled on the document body as the location changes:
+Write CSS rules that use the "[vista-{name}]" attributes toggled on the document body as the location changes:
 
-`.vista-{name} .my-thing { ... }`
+`[vista-{name}] .my-thing { ... }`
 
 ## Release History
 * 2014-04-10 [v0.1.0][] (first public release)
@@ -103,6 +104,7 @@ Write CSS rules that use the ".vista-{name}" classes toggled on the document bod
 * 2014-04-24 [v0.2.1][] (watch replaceState calls)
 * 2014-08-25 [v1.0.0][] (multiple <meta itemprop="vista" define="... instead of single <meta name="vista" content...)
 * 2014-09-23 [v1.1.0][] (Vista.active(name), toggle fix)
+* 2014-10-20 [v2.0.0][] (Use attributes instead of classes, add configurable display style, '=' now allowed in meta definitions)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
@@ -110,3 +112,4 @@ Write CSS rules that use the ".vista-{name}" classes toggled on the document bod
 [v0.2.1]: https://github.com/esha/vista/tree/0.2.1
 [v1.0.0]: https://github.com/esha/vista/tree/1.0.0
 [v1.1.0]: https://github.com/esha/vista/tree/1.1.0
+[v2.0.0]: https://github.com/esha/vista/tree/2.0.0
