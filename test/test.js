@@ -21,7 +21,7 @@
   */
 
   function visible(element) {
-    return element.offsetWidth > 0 || element.offsetHeight > 0;
+    return element && (element.offsetWidth > 0 || element.offsetHeight > 0);
   }
 
   module('vista');
@@ -31,7 +31,6 @@
     equal(typeof Vista.version, "string", "Vista.version");
     equal(typeof Vista.init, "undefined", "Vista.init should not be exposed");
     equal(typeof Vista.define, "function", "Vista.define");
-    equal(Array.isArray(Vista.inline), true, "Vista.inline");
     equal(typeof Vista.rules, "function", "Vista.rules");
     equal(typeof Vista.update, "function", "Vista.update");
     equal(typeof Vista.toggle, "function", "Vista.toggle");
@@ -44,6 +43,7 @@
     equal(view.name, 'name');
     equal(view.test('name'), true);
     equal(view.test('nope'), false);
+
     Vista.define('regexp', /^(reg|exp)$/);
     view = Vista._list.pop();
     equal(view.name, 'regexp');
@@ -51,18 +51,27 @@
     equal(view.test('exp'), true);
     equal(view.test('regexp'), false);
     var fn = function(){};
+
     Vista.define('function', fn);
     view = Vista._list.pop();
     equal(view.name, 'function');
     equal(view.test, fn);
   });
 
-  test('Vista.rules for all inline elements', function() {
-    expect(Vista.inline.length);
-    var css = Vista.rules('rule');
-    Vista.inline.forEach(function(el) {
-      ok(css.indexOf('.vista-rule '+el+'.show-rule') > 0);
-    });
+  test('Vista.define w/style arg', function() {
+    expect(1);
+    var rules = Vista.rules;
+    Vista.rules = function(name, style) {
+      Vista.rules = rules;
+      equal(style, 'inline');
+      return rules(name, style);
+    };
+    Vista.define('style', 'foo', 'inline');
+  });
+
+  test('Vista.rules includes style', function() {
+    var rule = Vista.rules('foo', 'flex');
+    ok(rule.indexOf('display: flex') > 0);
   });
 
   test('Vista.update calls all test fns', function() {
@@ -80,54 +89,62 @@
   });
 
   test('Vista.toggle', function() {
-    var classes = document.documentElement.classList;
-    equal(classes.contains('vista-test'), false);
+    var html = document.documentElement;
+    equal(html.hasAttribute('vista-test'), false);
     Vista.toggle('test', true);
-    equal(classes.contains('vista-test'), true);
+    equal(html.hasAttribute('vista-test'), true);
     Vista.toggle('test', true);
-    equal(classes.contains('vista-test'), true);
+    equal(html.hasAttribute('vista-test'), true);
     Vista.toggle('test', false);
-    equal(classes.contains('vista-test'), false);
+    equal(html.hasAttribute('vista-test'), false);
     Vista.toggle('test');
-    equal(classes.contains('vista-test'), true);
+    equal(html.hasAttribute('vista-test'), true);
     Vista.toggle('test');
-    equal(classes.contains('vista-test'), false);
+    equal(html.hasAttribute('vista-test'), false);
   });
 
   test('Vista.active', function() {
-    var classes = document.documentElement.classList;
+    var html = document.documentElement;
     Vista.toggle('test', true);
     var active = Vista.active('test');
     equal(typeof active, "boolean");
     ok(active, 'should be active');
-    equal(active, classes.contains('vista-test'));
+    equal(active, html.hasAttribute('vista-test'));
     Vista.toggle('test', false);
     ok(!Vista.active('test'));
   });
 
+//HACK: Until  is fixed, skip affected tests during build.
+if (!window.skipVisibilityTests) {
   test('head meta-tag definitions', function() {
-    var show = document.querySelector('.show-index'),
-        hide = document.querySelector('.hide-index');
+    var show = document.querySelector('[vista="index"]'),
+        hide = document.querySelector('[vista="!index"]');
     ok(visible(show));
     ok(!visible(hide));
 
-    show = document.querySelector('.show-hash');
-    hide = document.querySelector('.hide-hash');
+    show = document.querySelector('[vista="hash"]');
+    hide = document.querySelector('[vista="!hash"]');
     ok(!visible(show));
     ok(visible(hide));
     location.hash = 'hash';
-    ok(visible(show));
-    ok(!visible(hide));
+    ok(Vista.active('hash'), 'hash should be active');
+    ok(visible(show), 'hash element is not visible when hash is '+location.hash);
+    ok(!visible(hide), '!hash element is visible when hash is '+location.hash);
   });
 
   test('body meta-tag definitions', function() {
-    var show = document.querySelector('.show-re'),
-        hide = document.querySelector('.hide-re');
+    var show = document.querySelector('[vista="re"]'),
+        hide = document.querySelector('[vista="!re"]');
     ok(!visible(show));
     ok(visible(hide));
     location.hash = '';
+    ok(Vista.active('re'), 're should be active');
     ok(visible(show));
     ok(!visible(hide));
   });
+} else {
+  window.console.log('\nSkipping visibility tests until https://github.com/ariya/phantomjs/issues/12668 is fixed.\n'+
+                     'Please test in another browser to ensure functionality.');
+}
 
 }());

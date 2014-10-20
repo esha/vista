@@ -25,10 +25,10 @@
         _.define('start');
         _.update();
     },
-    classes = document.documentElement.classList,
+    html = document.documentElement,
     _ = {
         version: '<%= pkg.version %>',
-        define: function(name, test) {
+        define: function(name, test, style) {
             if (init) {
                 init();
             }
@@ -43,15 +43,17 @@
                     test = test.test.bind(test);// haha!
             }
             _._list.push({ name: name, test: test });
-            _.style.innerHTML += _.rules(name);
+            _.style.textContent += _.rules(name, style);
         },
-        inline: 'span a input button select label img'.split(' '),
-        rules: function(name) {
-            return '.show-'+name+
-                 ', .vista-'+name+' .hide-'+name+' { display: none !important; }\n'+
-                   '.vista-'+name+' .show-'+name+' { display: block !important; }\n'+
-                   '.vista-'+name+' '+_.inline.join('.show-'+name+
-                 ', .vista-'+name+' ')+'.show-'+name+' { display: inline-block !important; }\n';
+        rules: function(name, style) {
+            return '[vista="'+name+'"],\n'+
+                   '[vista-'+name+'] [vista="!'+name+'"] {\n'+
+                   '  display: none !important;\n'+
+                   '}\n'+
+                   '[vista-'+name+'] [vista="'+name+'"] {\n'+
+                   '  display: block !important;\n'+
+                   '  display: '+(style||'initial')+' !important;\n'+
+                   '}\n';
         },
         update: function() {
             var url = location+'',
@@ -66,19 +68,26 @@
             _.toggle('start', start);
         },
         active: function(name) {
-            return classes.contains('vista-'+name);
+            return html.hasAttribute('vista-'+name);
         },
         toggle: function(name, active) {
             active = active === undefined ? !_.active(name) : active;
-            classes[active ? 'add' : 'remove']('vista-'+name);
+            html[active ? 'setAttribute' : 'removeAttribute']('vista-'+name, 'active');
         },
         config: function() {
             var meta = document.querySelectorAll('meta[itemprop=vista]');
             for (var i=0,m=meta.length; i<m; i++) {
                 var el = meta[i],
-                    definitions = (el.getAttribute('define')||'').split(' ');
+                    definitions = (el.getAttribute('define')||'').split(' '),
+                    style = el.getAttribute('style');
                 for (var j=0,n=definitions.length; j<n; j++) {
-                    _.define.apply(_, definitions[j].split('='));
+                    var definition = definitions[j],
+                        eq = definition.indexOf('=');
+                    if (eq > 0) {
+                        _.define(definition.substring(0, eq), definition.substring(eq+1), style);
+                    } else {
+                        _.define(definition, undefined, style);
+                    }
                 }
                 el.setAttribute('itemprop', definitions.length ? 'vista-done' : 'vista-fail');
             }
