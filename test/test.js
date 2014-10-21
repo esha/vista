@@ -117,13 +117,13 @@
 //HACK: Until  is fixed, skip affected tests during build.
 if (!window.skipVisibilityTests) {
   test('head meta-tag definitions', function() {
-    var show = document.querySelector('[vista="index"]'),
-        hide = document.querySelector('[vista="!index"]');
+    var show = document.querySelector('[vista~="index"]'),
+        hide = document.querySelector('[vista~="!index"]');
     ok(visible(show));
     ok(!visible(hide));
 
-    show = document.querySelector('[vista="hash"]');
-    hide = document.querySelector('[vista="!hash"]');
+    show = document.querySelector('[vista~="hash"]');
+    hide = document.querySelector('[vista~="!hash"]');
     ok(!visible(show));
     ok(visible(hide));
     location.hash = 'hash';
@@ -133,14 +133,21 @@ if (!window.skipVisibilityTests) {
   });
 
   test('body meta-tag definitions', function() {
-    var show = document.querySelector('[vista="re"]'),
-        hide = document.querySelector('[vista="!re"]');
+    var show = document.querySelector('[vista~="re"]'),
+        hide = document.querySelector('[vista~="!re"]');
     ok(!visible(show));
     ok(visible(hide));
     location.hash = '';
     ok(Vista.active('re'), 're should be active');
     ok(visible(show));
     ok(!visible(hide));
+  });
+
+  test('multiple associations', function() {
+    var show = document.querySelector('[vista="!hash !re"]');
+    ok(!visible(show));
+    location.hash = '#other';
+    ok(visible(show));
   });
 } else {
   window.console.log('\nSkipping visibility tests until https://github.com/ariya/phantomjs/issues/12668 is fixed.\n'+

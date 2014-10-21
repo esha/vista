@@ -46,11 +46,11 @@
             _.style.textContent += _.rules(name, style);
         },
         rules: function(name, style) {
-            return '[vista="'+name+'"],\n'+
-                   '[vista-'+name+'] [vista="!'+name+'"] {\n'+
+            return '[vista~="'+name+'"],\n'+
+                   '[vista-'+name+'] [vista~="!'+name+'"] {\n'+
                    '  display: none !important;\n'+
                    '}\n'+
-                   '[vista-'+name+'] [vista="'+name+'"] {\n'+
+                   '[vista-'+name+'] [vista~="'+name+'"] {\n'+
                    '  display: block !important;\n'+
                    '  display: '+(style||'initial')+' !important;\n'+
                    '}\n';
