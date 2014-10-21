@@ -1,4 +1,4 @@
-/*! Vista - v2.0.0 - 2014-10-20
+/*! Vista - v2.0.1 - 2014-10-21
 * https://github.com/esha/vista
 * Copyright (c) 2014 ESHA Research; Licensed MIT */
 (function(window, document, location, history) {
@@ -30,7 +30,7 @@
     },
     html = document.documentElement,
     _ = {
-        version: '2.0.0',
+        version: '2.0.1',
         define: function(name, test, style) {
             if (init) {
                 init();
@@ -49,11 +49,11 @@
             _.style.textContent += _.rules(name, style);
         },
         rules: function(name, style) {
-            return '[vista="'+name+'"],\n'+
-                   '[vista-'+name+'] [vista="!'+name+'"] {\n'+
+            return '[vista~="'+name+'"],\n'+
+                   '[vista-'+name+'] [vista~="!'+name+'"] {\n'+
                    '  display: none !important;\n'+
                    '}\n'+
-                   '[vista-'+name+'] [vista="'+name+'"] {\n'+
+                   '[vista-'+name+'] [vista~="'+name+'"] {\n'+
                    '  display: block !important;\n'+
                    '  display: '+(style||'initial')+' !important;\n'+
                    '}\n';
