@@ -35,6 +35,7 @@
     equal(typeof Vista.update, "function", "Vista.update");
     equal(typeof Vista.toggle, "function", "Vista.toggle");
     equal(typeof Vista.active, "function", "Vista.active");
+    equal(typeof Vista.defined, "function", "Vista.defined");
   });
 
   test('Vista.define', function() {
@@ -114,6 +115,13 @@
     ok(!Vista.active('test'));
   });
 
+  test('Vista.defined', function() {
+    strictEqual(Vista.defined('hash'), true);
+    strictEqual(Vista.defined('defineme'), false);
+    Vista.define('defineme');
+    strictEqual(Vista.defined('defineme'), true);
+  });
+
 //HACK: Until  is fixed, skip affected tests during build.
 if (!window.skipVisibilityTests) {
   test('head meta-tag definitions', function() {
@@ -141,6 +149,19 @@ if (!window.skipVisibilityTests) {
     ok(Vista.active('re'), 're should be active');
     ok(visible(show));
     ok(!visible(hide));
+  });
+
+  test('body shortcut definitions', function() {
+    var simple = document.querySelector('[vista~="simple"]'),
+        not = document.querySelector('[vista~="!notsimple"]');
+    ok(!visible(simple));
+    ok(visible(not));
+    location.hash = 'simple';
+    ok(Vista.active('simple'), 'simple should be active');
+    ok(visible(simple));
+    location.hash = 'notsimple';
+    ok(!visible(not));
+    location.hash = '';
   });
 
   test('multiple associations', function() {

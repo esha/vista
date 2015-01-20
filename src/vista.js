@@ -67,6 +67,14 @@
             });
             _.toggle('start', start);
         },
+        defined: function(name) {
+            for (var i=0; i<_._list.length; i++) {
+                if (_._list[i].name === name) {
+                    return true;
+                }
+            }
+            return false;
+        },
         active: function(name) {
             return html.hasAttribute('vista-'+name);
         },
@@ -91,7 +99,20 @@
                 }
                 el.setAttribute('itemprop', definitions.length ? 'vista-done' : 'vista-fail');
             }
-            if (meta.length) {
+            var uses = document.querySelectorAll('[vista]');
+            for (var k=0; k<uses.length; k++) {
+                var use = uses[k].getAttribute('vista').split(' ');
+                for (var l=0; l<use.length; l++) {
+                    var name = use[l];
+                    if (name.charAt(0) === '!') {
+                        name = name.substring(1);
+                    }
+                    if (!_.defined(name)) {
+                        _.define(name);
+                    }
+                }
+            }
+            if (meta.length || uses.length) {
                 _.update();
             }
         }
