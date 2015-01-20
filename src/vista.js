@@ -68,9 +68,11 @@
             _.toggle('start', start);
         },
         defined: function(name) {
-            for (var i=0; i<_._list.length; i++) {
-                if (_._list[i].name === name) {
-                    return true;
+            if (_._list) {
+                for (var i=0; i<_._list.length; i++) {
+                    if (_._list[i].name === name) {
+                        return true;
+                    }
                 }
             }
             return false;
