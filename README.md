@@ -108,7 +108,7 @@ Write CSS rules that use the "[vista-{name}]" attributes toggled on the document
 * 2014-08-25 [v1.0.0][] (multiple <meta itemprop="vista" define="... instead of single <meta name="vista" content...)
 * 2014-09-23 [v1.1.0][] (Vista.active(name), toggle fix)
 * 2014-10-20 [v2.0.1][] (Use attributes instead of classes, add configurable display style, '=' now allowed in meta definitions)
-* 2015-01-20 [v2.1.0][] (Support shortcut define-and-use syntax, add Vista.defined(name) method)
+* 2015-01-20 [v2.1.1][] (Support shortcut define-and-use syntax, add Vista.defined(name) method)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
@@ -117,4 +117,4 @@ Write CSS rules that use the "[vista-{name}]" attributes toggled on the document
 [v1.0.0]: https://github.com/esha/vista/tree/1.0.0
 [v1.1.0]: https://github.com/esha/vista/tree/1.1.0
 [v2.0.1]: https://github.com/esha/vista/tree/2.0.1
-[v2.1.0]: https://github.com/esha/vista/tree/2.1.0
+[v2.1.1]: https://github.com/esha/vista/tree/2.1.1
