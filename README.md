@@ -2,9 +2,9 @@
 
 Vista gives you automatic, declarative, location-based control of element display.
 
-If you are developing a single-page application (of any degree of complexity), you should be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). This generally coincides with showing and hiding of page elements, usually a subtask of "routers" and "view managers". Such approaches needlessly bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.
+If you are developing a single-page application (of any degree of complexity), you should be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). This generally coincides with showing and hiding of page elements, usually a subtask of "routers" and "view managers". Such approaches bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.
 
-Vista makes "view management" simple, declarative, decoupled, and very fast. You need only define the tests (`<meta itemprop="vista" define="name=regexp"/>` or `Vista.define(name, regExpOrFn)`) and stick `vista="{name}"` or `vista="!{name}"` attributes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.
+Vista makes "view management" simple, declarative, decoupled, and very fast. You define the tests (`<meta itemprop="vista" define="name=regexp"/>` or `Vista.define(name, regExpOrFn)`) and put `vista="{name}"` or `vista="!{name}"` attributes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.
 
 ## Getting Started
 Download the [production version][min] or the [development version][max]. [![Build Status](https://travis-ci.org/esha/vista.png?branch=master)](https://travis-ci.org/esha/vista)  
@@ -25,7 +25,10 @@ Download the [production version][min] or the [development version][max]. [![Bui
 Declarative (best way):  
 
 `<meta itemprop="vista" define="name=test name2=test2 nameIsTest">`  
-`<meta itemprop="vista" define="special=\?layout=grid" style="flex">`  
+`<meta itemprop="vista" define="special=\?layout=grid" style="flex">`
+`<div vista="shortcut">`  
+
+If you use the shortcut way to define a URL test, your test string must be usable as an element attribute name. Regexps are obviously a no-no.
 
 Programmatic (when you need to):  
 
@@ -105,6 +108,7 @@ Write CSS rules that use the "[vista-{name}]" attributes toggled on the document
 * 2014-08-25 [v1.0.0][] (multiple <meta itemprop="vista" define="... instead of single <meta name="vista" content...)
 * 2014-09-23 [v1.1.0][] (Vista.active(name), toggle fix)
 * 2014-10-20 [v2.0.1][] (Use attributes instead of classes, add configurable display style, '=' now allowed in meta definitions)
+* 2015-01-20 [v2.1.0][] (Support shortcut define-and-use syntax, add Vista.defined(name) method)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
@@ -113,3 +117,4 @@ Write CSS rules that use the "[vista-{name}]" attributes toggled on the document
 [v1.0.0]: https://github.com/esha/vista/tree/1.0.0
 [v1.1.0]: https://github.com/esha/vista/tree/1.1.0
 [v2.0.1]: https://github.com/esha/vista/tree/2.0.1
+[v2.1.0]: https://github.com/esha/vista/tree/2.1.0
