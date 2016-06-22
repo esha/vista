@@ -169,6 +169,18 @@ if (!window.skipVisibilityTests) {
     ok(!visible(show));
     location.hash = '#other';
     ok(visible(show));
+
+    // thoroughly test that it's an implicit OR
+    show = document.querySelector('[vista="hash simple"]');
+    ok(!visible(show));
+    location.hash = 'simple';
+    ok(visible(show));
+    location.hash = '';
+    ok(!visible(show));
+    location.hash = 'hash';
+    ok(visible(show));
+    location.hash = '';
+    ok(!visible(show));
   });
 } else {
   window.console.log('\nSkipping visibility tests until https://github.com/ariya/phantomjs/issues/12668 is fixed.\n'+
