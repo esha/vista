@@ -23,6 +23,7 @@
   function visible(element) {
     return element && (element.offsetWidth > 0 || element.offsetHeight > 0);
   }
+  window.visible = visible;
 
   module('vista');
 
@@ -31,54 +32,57 @@
     equal(typeof Vista.version, "string", "Vista.version");
     equal(typeof Vista.init, "undefined", "Vista.init should not be exposed");
     equal(typeof Vista.define, "function", "Vista.define");
-    equal(typeof Vista.rules, "function", "Vista.rules");
     equal(typeof Vista.update, "function", "Vista.update");
     equal(typeof Vista.toggle, "function", "Vista.toggle");
     equal(typeof Vista.active, "function", "Vista.active");
-    equal(typeof Vista.defined, "function", "Vista.defined");
+    equal(typeof Vista.style, "object", "Vista.style");
+    equal(typeof Vista.tests, "object", "Vista.tests");
   });
 
   test('Vista.define', function() {
     Vista.define('name');
-    var view = Vista._list.pop();
-    equal(view.name, 'name');
-    equal(view.test('name'), true);
-    equal(view.test('nope'), false);
+    var test = Vista.tests.name;
+    equal(typeof test, 'function');
+    equal(test('name'), true);
+    equal(test('nope'), false);
+    delete Vista.tests.name;
 
     Vista.define('regexp', /^(reg|exp)$/);
-    view = Vista._list.pop();
-    equal(view.name, 'regexp');
-    equal(view.test('reg'), true);
-    equal(view.test('exp'), true);
-    equal(view.test('regexp'), false);
-    var fn = function(){};
+    test = Vista.tests.regexp;
+    equal(typeof test, 'function');
+    equal(test('reg'), true);
+    equal(test('exp'), true);
+    equal(test('regexp'), false);
+    delete Vista.tests.regexp;
 
+    var fn = function(){};
     Vista.define('function', fn);
-    view = Vista._list.pop();
-    equal(view.name, 'function');
-    equal(view.test, fn);
+    test = Vista.tests.function;
+    equal(typeof test, 'function');
+    strictEqual(test, fn);
+    delete Vista.tests.function;
   });
 
   test('Vista.define w/style arg', function() {
     expect(1);
-    var rules = Vista.rules;
-    Vista.rules = function(name, style) {
-      Vista.rules = rules;
+    var rules = Vista._rules;
+    Vista._rules = function(name, style) {
+      Vista._rules = rules;
       equal(style, 'inline');
       return rules(name, style);
     };
     Vista.define('style', 'foo', 'inline');
   });
 
-  test('Vista.rules includes style', function() {
-    var rule = Vista.rules('foo', 'flex');
+  test('Vista._rules includes style', function() {
+    var rule = Vista._rules('foo', 'flex');
     ok(rule.indexOf('display: flex') > 0);
   });
 
   test('Vista.update calls all test fns', function() {
     expect(2);
-    var _list = Vista._list;
-    Vista._list = [];
+    var tests = Vista.tests;
+    Vista.tests = {};
     Vista.define('one', function() {
       ok('one');
     });
@@ -86,7 +90,7 @@
       ok('two');
     });
     Vista.update();
-    Vista._list = _list;
+    Vista.tests = tests;
   });
 
   test('Vista.toggle', function() {
@@ -106,20 +110,17 @@
 
   test('Vista.active', function() {
     var html = document.documentElement;
-    Vista.toggle('test', true);
-    var active = Vista.active('test');
+    
+    Vista.toggle('foo', true);
+    var active = Vista.active('foo');
     equal(typeof active, "boolean");
     ok(active, 'should be active');
-    equal(active, html.hasAttribute('vista-test'));
-    Vista.toggle('test', false);
-    ok(!Vista.active('test'));
-  });
-
-  test('Vista.defined', function() {
-    strictEqual(Vista.defined('hash'), true);
-    strictEqual(Vista.defined('defineme'), false);
-    Vista.define('defineme');
-    strictEqual(Vista.defined('defineme'), true);
+    ok(!Vista.active('!foo'));
+    equal(active, html.hasAttribute('vista-foo'));
+    
+    Vista.toggle('foo', false);
+    ok(!Vista.active('foo'));
+    ok(Vista.active('!foo'));
   });
 
 //HACK: Until  is fixed, skip affected tests during build.
@@ -164,7 +165,7 @@ if (!window.skipVisibilityTests) {
     location.hash = '';
   });
 
-  test('multiple associations', function() {
+  test('implicit OR of tests', function() {
     var show = document.querySelector('[vista="!hash !re"]');
     ok(!visible(show));
     location.hash = '#other';
@@ -178,6 +179,28 @@ if (!window.skipVisibilityTests) {
     location.hash = '';
     ok(!visible(show));
     location.hash = 'hash';
+    ok(visible(show));
+    location.hash = '';
+    ok(!visible(show));
+  });
+
+  test('explicit AND of tests', function() {
+    var show = document.querySelector('[vista="hash+simple"]');
+    ok(!visible(show));
+    location.hash = 'simple';
+    ok(!visible(show));
+    location.hash = 'hash';
+    ok(!visible(show));
+    location.hash = 'hash/simple';
+    ok(visible(show));
+    location.hash = '';
+    ok(!visible(show));
+
+    show = document.querySelector('[vista="simple+!hash+index"]');
+    ok(!visible(show));
+    location.hash = 'hash/simple';
+    ok(!visible(show));
+    location.hash = 'simple';
     ok(visible(show));
     location.hash = '';
     ok(!visible(show));

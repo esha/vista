@@ -4,8 +4,7 @@
     var init = function() {
         init = false;
 
-        _._list = [];
-
+        _.tests = {};
         _.style = document.createElement('style');
         document.head.appendChild(_.style);
 
@@ -42,49 +41,53 @@
                 case "object":
                     test = test.test.bind(test);// haha!
             }
-            _._list.push({ name: name, test: test });
-            _.style.textContent += _.rules(name, style);
-        },
-        rules: function(name, style) {
-            return '[vista~="'+name+'"],\n'+
-                   '[vista-'+name+'] [vista~="!'+name+'"] {\n'+
-                   '  display: none !important;\n'+
-                   '}\n'+
-                   '[vista-'+name+'] [vista~="'+name+'"] {\n'+
-                   '  display: block !important;\n'+
-                   '  display: '+(style||'initial')+' !important;\n'+
-                   '}\n';
+            _.tests[name] = test;
+            _.style.textContent += _._rules(name, style);
         },
         update: function() {
             var url = location+'',
                 start = true;
-            _._list.forEach(function(vista) {
-                var show = vista.test(url);
-                _.toggle(vista.name, show);
+            for (var name in _.tests) {
+                var show = _.tests[name](url);
+                _.toggle(name, show);
                 if (show) {
                     start = false;
                 }
-            });
+            }
             _.toggle('start', start);
         },
-        defined: function(name) {
-            if (_._list) {
-                for (var i=0; i<_._list.length; i++) {
-                    if (_._list[i].name === name) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        },
         active: function(name) {
-            return html.hasAttribute('vista-'+name);
+            name = _._clean(name);
+            var not = _._not(name),
+                hasAttr = html.hasAttribute('vista-'+(not||name));
+            return (hasAttr && !not) || (!hasAttr && !!not);
         },
         toggle: function(name, active) {
+            name = _._clean(name);
             active = active === undefined ? !_.active(name) : active;
             html[active ? 'setAttribute' : 'removeAttribute']('vista-'+name, 'active');
         },
-        config: function() {
+
+        _clean: function(name) {
+            return name.indexOf('+') > 0 ?
+                name.replace(/\+|\!/g, '_') :
+                name;
+        },
+        _not: function(name) {
+            return name.charAt(0) === '!' && name.substring(1);
+        },
+        _rules: function(name, style) {
+            var attr = _._clean(name);
+            return '[vista~="'+name+'"],\n'+
+                   '[vista-'+attr+'] [vista~="!'+name+'"] {\n'+
+                   '  display: none !important;\n'+
+                   '}\n'+
+                   '[vista-'+attr+'] [vista~="'+name+'"] {\n'+
+                   '  display: block !important;\n'+
+                   '  display: '+(style||'initial')+' !important;\n'+
+                   '}\n';
+        },
+        _config: function() {
             var meta = document.querySelectorAll('meta[itemprop=vista]');
             for (var i=0,m=meta.length; i<m; i++) {
                 var el = meta[i],
@@ -103,25 +106,49 @@
             }
             var uses = document.querySelectorAll('[vista]');
             for (var k=0; k<uses.length; k++) {
-                var use = uses[k].getAttribute('vista').split(' ');
-                for (var l=0; l<use.length; l++) {
-                    var name = use[l];
-                    if (name.charAt(0) === '!') {
-                        name = name.substring(1);
-                    }
-                    if (!_.defined(name)) {
-                        _.define(name);
-                    }
-                }
+                _._ensure(uses[k].getAttribute('vista').split(' '));
             }
             if (meta.length || uses.length) {
                 _.update();
             }
+        },
+        _ensure: function(names) {
+            for (var i=0; i<names.length; i++) {
+                var name = names[i],
+                    test = name;
+                if (name.indexOf('+') > 0) {
+                    var subnames = name.split('+');
+                    _._ensure(subnames);
+                    test = _._and(subnames);
+                } else {
+                    name = _._not(name) || name;
+                    test = name;
+                }
+                if (!_.tests.hasOwnProperty(name)) {
+                    _.define(name, test);
+                }
+            }
+        },
+        _and: function(names) {
+            return function and(url) {
+                for (var j=0; j<names.length; j++) {
+                    var name = names[j],
+                        not = name.charAt(0) === '!';
+                    if (not) {
+                        name = name.substring(1);
+                    }
+                    var passed = _.tests[name](url);
+                    if ((passed && not) || (!passed && !not)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
         }
     };
 
-    _.config();
-    document.addEventListener('DOMContentLoaded', _.config);
+    _._config();
+    document.addEventListener('DOMContentLoaded', _._config);
 
     // export Vista (AMD, commonjs, or window)
     var define = window.define || function(){};
