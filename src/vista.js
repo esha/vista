@@ -1,7 +1,7 @@
 (function(window, document, location, history) {
     'use strict';
 
-    var init = function() {
+    var init = function(_) {
         init = false;
 
         _.tests = {};
@@ -29,7 +29,7 @@
         version: '<%= pkg.version %>',
         define: function(name, test, style) {
             if (init) {
-                init();
+                init(_);
             }
             switch (typeof test) {
                 case "undefined":
