@@ -55,13 +55,21 @@ Vista.define('special', function(url) {
 
 ### Use
 
-To show an element only when the test passes:  
+To show an element only when a test passes:  
 
 `vista="{name}"`
 
-or hide an element only when a test passes:
+To show an element only when a test fails:
 
 `vista="!{name}"`
+
+To show an element when any of several tests pass:
+
+`vista="{onetest} {anothertest}"`
+
+To show an element when all of several tests pass:
+
+`vista="{name}+{anothertest}"`
 
 The needed CSS rules are generated and applied automatically for you. Here are some usage examples:
 
@@ -92,10 +100,6 @@ To test whether a particular status is active or not:
 
 `Vista.active(name);`
 
-To add additional elements that should be `display: inline-block;` instead of `display: block;` for *subsequent* definitions:
-
-`Vista.inline.push('x-inline-element');`
-
 Write CSS rules that use the "[vista-{name}]" attributes toggled on the document body as the location changes:
 
 `[vista-{name}] .my-thing { ... }`
@@ -109,6 +113,7 @@ Write CSS rules that use the "[vista-{name}]" attributes toggled on the document
 * 2014-09-23 [v1.1.0][] (Vista.active(name), toggle fix)
 * 2014-10-20 [v2.0.1][] (Use attributes instead of classes, add configurable display style, '=' now allowed in meta definitions)
 * 2015-01-20 [v2.1.1][] (Support shortcut define-and-use syntax, add Vista.defined(name) method)
+* 2016-06-23 [v3.0.0][] (Removed Vista.defined, support, compound definition-test syntax, update dev deps, misc refactoring)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
@@ -118,3 +123,4 @@ Write CSS rules that use the "[vista-{name}]" attributes toggled on the document
 [v1.1.0]: https://github.com/esha/vista/tree/1.1.0
 [v2.0.1]: https://github.com/esha/vista/tree/2.0.1
 [v2.1.1]: https://github.com/esha/vista/tree/2.1.1
+[v3.0.0]: https://github.com/esha/vista/tree/3.0.0
