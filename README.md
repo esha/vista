@@ -35,7 +35,7 @@ Download the [production version][min] or the [development version][max]. [![Bui
 
 ### Defining Your Views
 
-"Views" with Vista are just an association between a name, a "URL test" for the current `location.href`, and optionally, a display style to be used. In many cases, the logical name and the test can be the same value, as in the quick example above. In other cases, you'll want a simpler name or a more complex URL test.
+"Views" with Vista are simply an association between a name, a "URL test" for the current `location.href`, and optionally, a display style to be used. In many cases, the logical name and the test can be the same value, as in the quick example above. In other cases, you'll want a simpler name or a more complex URL test.
 
 #### Declarative Definition (best way):  
 
@@ -72,7 +72,7 @@ The name will be used to generate the pertinent CSS display styles. The URL test
 Vista.define('reports');
 
 // a view where the URL test is a full RegExp
-Vista.define('hasChart', /#.*(pie chart|bar graph|spark line)/);
+Vista.define('hasChart', /#.*(pie|bar|spark)/);
 
 // a view where the URL test is a function
 Vista.define('special', function(url) {
@@ -81,7 +81,7 @@ Vista.define('special', function(url) {
 }, 'inline-block');
 ```
 
-Of course, only the last two actually have to be done with JavaScript. Neither functions, nor URL tests with spaces in them can be defined as tests via markup at this time, though the intention is to support them eventually.
+Of course, only the last one actually must be done with JavaScript. Functions may not be defined as tests via markup at this time, though they may be supported (via reference) eventually.
 
 ### Using Your Views
 
