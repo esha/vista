@@ -20,7 +20,7 @@ Download the [production version][min] or the [development version][max]. [![Bui
 
 ### A Quick Example
 
-```
+```html
 <div vista="foo">
   Foo! <!-- gets hidden until (location.href.match('foo') !== null) -->
 </div>
