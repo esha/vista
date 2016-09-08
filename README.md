@@ -101,7 +101,7 @@ To show an element when all of several tests pass:
 
 `<div vista="nameOfTest+a_test">`
 
-The needed CSS rules are generated and applied automatically for you. Here are some usage examples:
+The needed CSS rules are generated and applied automatically for you. Here's another small usage example:
 
 ```html
 <body>
@@ -130,9 +130,9 @@ To test whether a particular status is active or not:
 
 `Vista.active(name);`
 
-Write CSS rules that use the "[vista-{name}]" attributes toggled on the document body as the location changes:
+Write CSS rules that use the "[vista-name]" attributes toggled on the document body as the location changes:
 
-`[vista-{name}] .my-thing { ... }`
+`[vista-name] .my-thing { ... }`
 
 ## Release History
 * 2014-04-10 [v0.1.0][] (first public release)
