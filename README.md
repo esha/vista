@@ -1,10 +1,8 @@
 # Vista
 
-Vista gives you automatic, declarative, location-based control of element display.
+Vista gives you automatic, declarative, URL-based control of element display. In a typical web site, each URL loads a different set of HTML elements for display. In a single page webapp, all the HTML lives under one URL. Vista makes it easy to maintain a meaningful relationship between the URL and the elements that are displayed. After all, a single-page application should still be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). While this display control is usually a subtask of "routers" and "view controllers", such approaches bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.
 
-If you are developing a single-page application (of any degree of complexity), you should be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). This generally coincides with showing and hiding of page elements, usually a subtask of "routers" and "view managers". Such approaches bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.
-
-Vista makes "view management" simple, declarative, decoupled, and very fast. You define the tests (`<meta itemprop="vista" define="name=regexp"/>` or `Vista.define(name, regExpOrFn)`) and put `vista="{name}"` or `vista="!{name}"` attributes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.
+Vista makes managing the active "view" simple, declarative, decoupled, and very fast. You add the `vista` attribute to your elements and optionally define a few URL tests (which you can also declare in your markup). No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.
 
 ## Getting Started
 Download the [production version][min] or the [development version][max]. [![Build Status](https://travis-ci.org/esha/vista.png?branch=master)](https://travis-ci.org/esha/vista)  
@@ -20,56 +18,88 @@ Download the [production version][min] or the [development version][max]. [![Bui
 
 ## Documentation
 
-### Define
+### A Quick Example
 
-Declarative (best way):  
+```
+<div vista="foo">
+  Foo! <!-- gets hidden until (location.href.match('foo') !== null) -->
+</div>
+<div vista="!foo">
+ Bar. <!-- is visible as long as (location.href.match('foo') === null) -->
+</div>
+<a href="#shows-foo">Clicking this will show Foo and hide Bar</a>
+<a href="#whatever">Clicking this will hide Foo and show Bar</a>
+<script src="../bower_components/vista/dist/vista.min.js"></script>
+```
 
-`<meta itemprop="vista" define="name=test name2=test2 nameIsTest">`  
-`<meta itemprop="vista" define="special=\?layout=grid" style="flex">`
-`<div vista="shortcut">`  
 
-If you use the shortcut way to define a URL test, your test string must be usable as an element attribute name. Regexps are obviously a no-no.
+### Defining Your Views
 
-Programmatic (when you need to):  
+"Views" with Vista are just an association between a name, a "URL test" for the current `location.href`, and optionally, a display style to be used. In many cases, the logical name and the test can be the same value, as in the quick example above. In other cases, you'll want a simpler name or a more complex URL test.
+
+#### Declarative Definition (best way):  
+
+Basic version (looks for `location.href.match('shortcut')`):  
+```html
+<div vista="shortcut">...</div>
+```  
+
+Named test (looks for `location.href.match('test')`):  
+```html
+<meta itemprop="vista" define="name=test">
+<div vista="name">...</div>
+```  
+
+Multiple, space-delimited, named tests:  
+```html
+<meta itemprop="vista" define="name2=test2 grid=(\\?|&|#)layout=grid" style="flex">
+<span vista="name2">...</span><div vista="grid">...</div>
+```  
+
+The last one allows you to also specify the display style value to be used,
+where the default of `initial` (with `block` as fallback) is not desired.  
+
+Named definitions do not need to be declared next to the elements they are controlling.
+
+#### Programmatic Definition (if you really must):  
 
 `Vista.define(name[, test[, style]])`  
 
-The name will be used to generate the pertinent CSS display styles. The test will be turned into a regular expression that is tested against the current URL of the page. Or, if you are using `Vista.define(name, test)`, the test may be a RegExp instance or Function. If, via either definition method, the test is omitted, then the name itself will be used as the test expression (which is often sufficient). Here are some definition examples:
+The name will be used to generate the pertinent CSS display styles. The URL test will be turned into a regular expression that is tested against the current URL of the page. Or, if you are using `Vista.define(name, test)`, the test may be a RegExp instance or Function. If, via either definition method, the test is omitted, then the name itself will be used as the test expression (which is often sufficient). Here are some definition examples in JavaScript:
 
 ```javascript
+// a simple view, where the name and URL test are the same
 Vista.define('reports');
-Vista.define('hasChart', /#.*(pie|bar|line)/);
+
+// a view where the URL test is a full RegExp
+Vista.define('hasChart', /#.*(pie chart|bar graph|spark line)/);
+
+// a view where the URL test is a function
 Vista.define('special', function(url) {
     // return a truthy value to pass the test or falsey to fail
     return url.indexOf('special=true') > 0 || user.settings('special');
 }, 'inline-block');
 ```
 
-```html
-<head>
-  <meta itemprop="vista" define="reports hasChart=#(pie|bar|line) query=\?q=.+"/>
-  <script src="../bower_components/vista/dist/vista.min.js"></script>
-</head>
-...
-```
+Of course, only the last two actually have to be done with JavaScript. Neither functions, nor URL tests with spaces in them can be defined as tests via markup at this time, though the intention is to support them eventually.
 
-### Use
+### Using Your Views
 
 To show an element only when a test passes:  
 
-`vista="{name}"`
+`<button vista="nameOfTest">`
 
 To show an element only when a test fails:
 
-`vista="!{name}"`
+`<span vista="!nameOfTest">`
 
 To show an element when any of several tests pass:
 
-`vista="{onetest} {anothertest}"`
+`<a vista="a_test anotherTest">`
 
 To show an element when all of several tests pass:
 
-`vista="{name}+{anothertest}"`
+`<div vista="nameOfTest+a_test">`
 
 The needed CSS rules are generated and applied automatically for you. Here are some usage examples:
 
