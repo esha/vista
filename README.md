@@ -21,15 +21,10 @@ Download the [production version][min] or the [development version][max]. [![Bui
 ### A Quick Example
 
 ```html
-<div vista="foo">
-  Foo! <!-- gets hidden until (location.href.match('foo') !== null) -->
-</div>
-<div vista="!foo">
- Bar. <!-- is visible as long as (location.href.match('foo') === null) -->
-</div>
-<a href="#shows-foo">Clicking this will show Foo and hide Bar</a>
-<a href="#whatever">Clicking this will hide Foo and show Bar</a>
-<script src="../bower_components/vista/dist/vista.min.js"></script>
+<p vista="foo">Foo</p><!-- hidden until location.href.match('foo') !== null -->
+<p vista="!foo">Bar</p><!-- visible while location.href.match('foo') === null -->
+<a href="#shows_foo">Show Foo And Hide Bar</a>
+<a href="#anythingelse">Hide Foo And Show Bar</a>
 ```
 
 
