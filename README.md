@@ -50,9 +50,9 @@ Named test (looks for `location.href.match('test')`):
 <div vista="name">...</div>
 ```  
 
-Multiple, space-delimited, named tests:  
+A 2nd named, regexp test and a custom style (2nd one looks for specific query param):  
 ```html
-<meta itemprop="vista" define="name2=test2 grid=(\\?|&|#)layout=grid" style="flex">
+<meta itemprop="vista" define="name=test grid=(\\?|&)layout=grid" style="flex">
 <span vista="name2">...</span><div vista="grid">...</div>
 ```  
 
