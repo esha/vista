@@ -1,8 +1,8 @@
 # Vista
 
-Vista gives you automatic, declarative, URL-based control of element display. In a typical web site, each URL loads a different set of HTML elements for display. In a single page webapp, all the HTML lives under one URL. Vista makes it easy to maintain a meaningful relationship between the URL and the elements that are displayed. After all, a single-page application should still be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). While this display control is usually a subtask of "routers" and "view controllers", such approaches bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.
+Vista provides declarative, URL-driven control of element display. In a typical webapp, each URL loads a different page of HTML elements. In a single page webapp, all the HTML elements live in the same page but only some are displayed at any one time. Vista makes it easy to restore that meaningful relationship between the URL and the elements that are displayed. After all, a single-page application should still be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). While this display control is usually a subtask of "routers" and "view controllers", such approaches bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is can be constraining in the best cases and often is simply unnecessary. Sometimes it is cleaner to leave control of HTML to your HTML, even in a single page app.
 
-Vista makes managing the active "view" simple, declarative, decoupled, and very fast. You add the `vista` attribute to your elements and optionally define a few URL tests (which you can also declare in your markup). No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.
+Vista enables you to manage element display in a way that is simple, declarative, decoupled, and fast. Just add a `vista="part-of-url-here"` attribute to your element, and it will only be displayed when the URL matches. Nothing else needed. Of course, if you want more complex URL tests, Vista also provides easy ways to declare those in your markup too. There are no concerns about view heirarchy/containers/renderers/lifecycles. No manual display toggling. No extra CSS or JavaScript to write. There are no routers or event listeners to configure. You can use Vista with your routers or view renderers or on its own. It has no dependencies, no known conflicts, and few constraints.
 
 ## Getting Started
 Download the [production version][min] or the [development version][max]. [![Build Status](https://travis-ci.org/esha/vista.png?branch=master)](https://travis-ci.org/esha/vista)  
@@ -21,7 +21,7 @@ Download the [production version][min] or the [development version][max]. [![Bui
 ### A Quick Example
 
 ```html
-<p vista="foo">Foo</p><!-- hidden until location.href.match('foo') !== null -->
+<p vista="foo">Foo</p><!-- hidden while location.href.match('foo') === null -->
 <p vista="!foo">Bar</p><!-- visible while location.href.match('foo') === null -->
 <a href="#shows_foo">Show Foo And Hide Bar</a>
 <a href="#anythingelse">Hide Foo And Show Bar</a>
@@ -30,37 +30,36 @@ Download the [production version][min] or the [development version][max]. [![Bui
 
 ### Defining Your Views
 
-"Views" with Vista are simply an association between a name, a "URL test" for the current `location.href`, and optionally, a display style to be used. In many cases, the logical name and the test can be the same value, as in the quick example above. In other cases, you'll want a simpler name or a more complex URL test.
+"Views" with Vista are defined by a name and a "URL test" for the current `location.href` (optionally, a display style too). In many cases, that name and the test can be the same value, as in the quick example above. In other cases, you'll want a more complex URL test and need a simpler logical name.
 
 #### Declarative Definition (best way):  
 
-Basic version (looks for `location.href.match('shortcut')`):  
+Basic version (element is visible if current URL has 'simple' in it):  
 ```html
-<div vista="shortcut">...</div>
+<div vista="simple">...</div>
 ```  
 
-Named test (looks for `location.href.match('test')`):  
+Named test (visible if current URL has 'test' in it):  
 ```html
 <meta itemprop="vista" define="name=test">
 <div vista="name">...</div>
 ```  
 
-A 2nd named, regexp test and a custom style (2nd one looks for specific query param):  
+A 2nd named, regexp test and a custom style:  
 ```html
 <meta itemprop="vista" define="name=test grid=(\\?|&)layout=grid" style="flex">
-<span vista="name2">...</span><div vista="grid">...</div>
+<div vista="grid">...</div><!-- 'display: flex', if URL has specific query param -->
+<span vista="!name">...</span><!-- 'display: flex', if URL doesn't have 'test' in it -->
 ```  
 
-The last one allows you to also specify the display style value to be used,
-where the default of `initial` (with `block` as fallback) is not desired.  
+It may be helpful to know that in the common case, where no custom display style is specified, the default style used is `initial` (with `block` as fallback for browsers that need it).  
 
-Named definitions do not need to be declared next to the elements they are controlling.
+Also, note that definitions never need to be declared next to the elements they are controlling.
+Your `<meta itemprop="vista">` definitions can be placed anywhere. The `<head>` element is recommended.
 
 #### Programmatic Definition (if you really must):  
 
-`Vista.define(name[, test[, style]])`  
-
-The name will be used to generate the pertinent CSS display styles. The URL test will be turned into a regular expression that is tested against the current URL of the page. Or, if you are using `Vista.define(name, test)`, the test may be a RegExp instance or Function. If, via either definition method, the test is omitted, then the name itself will be used as the test expression (which is often sufficient). Here are some definition examples in JavaScript:
+The provided API is `Vista.define(name[, test[, style]])`. Here are some examples:
 
 ```javascript
 // simple view, where the name and URL test value are the same
@@ -78,6 +77,8 @@ Vista.define('special', function(url) {
 
 Of course, only the last one actually must be done with JavaScript. Functions may not be defined as tests via markup at this time, though they may be supported (via reference) eventually.
 
+Please note that when you define new tests programmatically, they are not automatically applied until the next time the location is updated. To force an immediate re-evaluation of all tests, call `Vista.update()`.
+
 ### Using Your Views
 
 To show an element only when a test passes:  
@@ -90,11 +91,11 @@ To show an element only when a test fails:
 
 To show an element when any of several tests pass:
 
-`<a vista="a_test anotherTest">`
+`<a vista="my_test myOtherTest">`
 
 To show an element when all of several tests pass:
 
-`<div vista="nameOfTest+a_test">`
+`<div vista="nameOfTest+my_test">`
 
 The needed CSS rules are generated and applied automatically for you. Here's another small usage example:
 
@@ -111,23 +112,25 @@ The needed CSS rules are generated and applied automatically for you. Here's ano
 </body>
 ```
 
-### "Advanced" Use
+### Implementation
 
-To force immediate evaluation of all test statuses (i.e. after you define new ones, but before a url change):
+The names of each defined view are used to generate the needed CSS rules for controlling the display of related `[vista~="name"]` elements. All declarative URL tests are turned into regular expressions to be tested against the current URL of the page at initialization and any time that the location is updated. As shown above, if you are using `Vista.define(name, test[, style])`, the test parameter will accept a RegExp instance or Function. If, via either declarative or programmatic definition, the test is omitted, then the name itself is always used as the test expression. Most users will find this sufficient in the majority of uses.
 
-`Vista.update();`
+Upon page load, location changes, or calls to `Vista.update()`, all tests are evaluated. For each one, a correlating `vista-name` attribute on the `<html>` element is toggled, according to whether the test returns a truthy or falsey value. 
 
-To temporarily force a particular status (i.e. override the latest update):
+### "Advanced" Features
+
+Temporarily force a particular status (i.e. override the latest update):
 
 `Vista.toggle(name[, active]);`
 
-To test whether a particular status is active or not:
+Test whether a particular status is active or not:
 
 `Vista.active(name);`
 
-Write CSS rules that use the "[vista-name]" attributes toggled on the document body as the location changes:
+Write your own CSS rules that use the "[vista-name]" attributes toggled on the document element as the location changes:
 
-`[vista-name] .my-thing { ... }`
+`html[vista-name] .my-thing { ... }`
 
 ## Release History
 * 2014-04-10 [v0.1.0][] (first public release)
@@ -138,7 +141,7 @@ Write CSS rules that use the "[vista-name]" attributes toggled on the document b
 * 2014-09-23 [v1.1.0][] (Vista.active(name), toggle fix)
 * 2014-10-20 [v2.0.1][] (Use attributes instead of classes, add configurable display style, '=' now allowed in meta definitions)
 * 2015-01-20 [v2.1.1][] (Support shortcut define-and-use syntax, add Vista.defined(name) method)
-* 2016-06-23 [v3.0.0][] (Removed Vista.defined, support, compound definition-test syntax, update dev deps, misc refactoring)
+* 2016-06-23 [v3.0.0][] (Removed Vista.defined, support compound+definition+test syntax, update dev deps, misc refactoring)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
