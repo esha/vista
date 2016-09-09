@@ -68,16 +68,16 @@ Named definitions do not need to be declared next to the elements they are contr
 The name will be used to generate the pertinent CSS display styles. The URL test will be turned into a regular expression that is tested against the current URL of the page. Or, if you are using `Vista.define(name, test)`, the test may be a RegExp instance or Function. If, via either definition method, the test is omitted, then the name itself will be used as the test expression (which is often sufficient). Here are some definition examples in JavaScript:
 
 ```javascript
-// a simple view, where the name and URL test are the same
+// simple view, where the name and URL test value are the same
 Vista.define('reports');
 
-// a view where the URL test is a full RegExp
-Vista.define('hasChart', /#.*(pie|bar|spark)/);
+// view with full RegExp to test if URL's full hash equals a chart
+Vista.define('hasChart', /#(pie|bar)$/);
 
-// a view where the URL test is a function
+// view with a custom test function to which the URL is passed and an alternate style
 Vista.define('special', function(url) {
     // return a truthy value to pass the test or falsey to fail
-    return url.indexOf('special=true') > 0 || user.settings('special');
+    return url.indexOf('special') > 0 || localStorage.getItem('special');
 }, 'inline-block');
 ```
 
