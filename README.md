@@ -21,10 +21,10 @@ Download the [production version][min] or the [development version][max]. [![Bui
 ### A Quick Example
 
 ```html
-<p vista="foo">Foo</p><!-- hidden while location.href.match('foo') === null -->
-<p vista="!foo">Bar</p><!-- visible while location.href.match('foo') === null -->
-<a href="#shows_foo">Show Foo And Hide Bar</a>
-<a href="#anythingelse">Hide Foo And Show Bar</a>
+<p vista="foo">Foo</p><!-- hidden while no section of the URL is 'foo' -->
+<p vista="!foo">Bar</p><!-- visible while no section of the URL is 'foo' -->
+<a href="#foo">Show Foo And Hide Bar</a>
+<a href="#notjustfoo">Hide Foo And Show Bar</a>
 ```
 
 
@@ -34,23 +34,25 @@ Download the [production version][min] or the [development version][max]. [![Bui
 
 #### Declarative Definition (best way):  
 
-Basic version (element is visible if current URL has 'simple' in it):  
+Basic version (element is visible when URL like 'http://example.com/simple.html'):  
 ```html
 <div vista="simple">...</div>
 ```  
 
-Named test (visible if current URL has 'test' in it):  
+Named test (visible when URL like 'http://example.com?test_this=true'):  
 ```html
-<meta itemprop="vista" define="name=test">
+<meta itemprop="vista" define="name=test_this">
 <div vista="name">...</div>
 ```  
 
-A 2nd named, regexp test and a custom style:  
+Add a 2nd named, regexp test and a custom style:  
 ```html
-<meta itemprop="vista" define="name=test grid=(\\?|&)layout=grid" style="flex">
-<div vista="grid">...</div><!-- 'display: flex', if URL has specific query param -->
-<span vista="!name">...</span><!-- 'display: flex', if URL doesn't have 'test' in it -->
+<meta itemprop="vista" define="name=test_this grid=layout=grid" style="flex">
+<div vista="grid">...</div><!-- 'display: flex', when URL like http://example.com?layout=grid&a=1 -->
+<span vista="!name">...</span><!-- 'display: flex', when URL lacks a 'test_this' section -->
 ```  
+
+As you can see, multiple definitions can share the same `<meta itemprop="vista">` element, as long as they are space-delimited.
 
 It may be helpful to know that in the common case, where no custom display style is specified, the default style used is `initial` (with `block` as fallback for browsers that need it).  
 
@@ -114,7 +116,7 @@ The needed CSS rules are generated and applied automatically for you. Here's ano
 
 ### Implementation
 
-The names of each defined view are used to generate the needed CSS rules for controlling the display of related `[vista~="name"]` elements. All declarative URL tests are turned into regular expressions to be tested against the current URL of the page at initialization and any time that the location is updated. As shown above, if you are using `Vista.define(name, test[, style])`, the test parameter will accept a RegExp instance or Function. If, via either declarative or programmatic definition, the test is omitted, then the name itself is always used as the test expression. Most users will find this sufficient in the majority of uses.
+The names of each defined view are used to generate the needed CSS rules for controlling the display of related `[vista~="name"]` elements. All declarative URL tests are turned into regular expressions. If the declared test starts/ends with anything that looks like URL format chars (i.e. `./\?=&#`) or regexp start/end chars (`^` and `$`), then that end of the test is left as-is, otherwise, the end will be pre/postfixed with regexp to match those relevant chars. This is done to ensure that full URL section matches are the default (avoiding false positives like "color=reddish" when you only wanted "color=red"). The resulting regexps are tested against the current URL of the page at page load and any time that the location is updated. As shown above, if you are using `Vista.define(name, test[, style])`, the test parameter will directly accept a RegExp instance or Function. If, via either declarative or programmatic definition, the test is omitted, then the name itself is always used as the test expression. Most users will find this sufficient in the majority of uses.
 
 Upon page load, location changes, or calls to `Vista.update()`, all tests are evaluated. For each one, a correlating `vista-name` attribute on the `<html>` element is toggled, according to whether the test returns a truthy or falsey value. 
 
