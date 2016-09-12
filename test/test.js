@@ -143,82 +143,83 @@
   QUnit.test('head meta-tag definitions', function(assert) {
     var show = document.querySelector('[vista~="index"]'),
         hide = document.querySelector('[vista~="!index"]');
-    assert.ok(visible(show));
-    assert.ok(!visible(hide));
+    isVisible(assert, show);
+    isNotVisible(assert, hide);
 
     show = document.querySelector('[vista~="hash"]');
     hide = document.querySelector('[vista~="!hash"]');
-    assert.ok(!visible(show));
-    assert.ok(visible(hide));
+    isNotVisible(assert, show);
+    isVisible(assert, hide);
     location.hash = 'hash';
     assert.ok(Vista.active('hash'), 'hash should be active');
-    assert.ok(visible(show), 'hash element is not visible when hash is '+location.hash);
-    assert.ok(!visible(hide), '!hash element is visible when hash is '+location.hash);
+    isVisible(assert, show, 'hash element is not visible when hash is '+location.hash);
+    isNotVisible(assert, hide, '!hash element is visible when hash is '+location.hash);
   });
 
   QUnit.test('body meta-tag definitions', function(assert) {
+    location.hash = '';
     var show = document.querySelector('[vista~="re"]'),
         hide = document.querySelector('[vista~="!re"]');
-    assert.ok(!visible(show));
-    assert.ok(visible(hide));
+    isVisible(assert, show);
+    isNotVisible(assert, hide);
     location.hash = '';
     assert.ok(Vista.active('re'), 're should be active');
-    assert.ok(visible(show));
-    assert.ok(!visible(hide));
+    isVisible(assert, show);
+    isNotVisible(assert, hide);
   });
 
   QUnit.test('body shortcut definitions', function(assert) {
-    var simple = document.querySelector('[vista~="simple"]'),
-        not = document.querySelector('[vista~="!notsimple"]');
-    assert.ok(!visible(simple));
-    assert.ok(visible(not));
+    var simple = document.querySelector('[vista="simple"]'),
+        not = document.querySelector('[vista="!notsimple"]');
+    isNotVisible(assert, simple);
+    isVisible(assert, not);
     location.hash = 'simple';
     assert.ok(Vista.active('simple'), 'simple should be active');
-    assert.ok(visible(simple));
+    isVisible(assert, simple);
     location.hash = 'notsimple';
-    assert.ok(!visible(not));
+    isNotVisible(assert, not);
     location.hash = '';
   });
 
   QUnit.test('implicit OR of tests', function(assert) {
     var show = document.querySelector('[vista="!hash !re"]');
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
     location.hash = '#other';
-    assert.ok(visible(show));
+    isVisible(assert, show);
 
     // thoroughly test that it's an implicit OR
     show = document.querySelector('[vista="hash simple"]');
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
     location.hash = 'simple';
-    assert.ok(visible(show));
+    isVisible(assert, show);
     location.hash = '';
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
     location.hash = 'hash';
-    assert.ok(visible(show));
+    isVisible(assert, show);
     location.hash = '';
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
   });
 
   QUnit.test('explicit AND of tests', function(assert) {
     var show = document.querySelector('[vista="hash+simple"]');
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
     location.hash = 'simple';
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
     location.hash = 'hash';
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
     location.hash = 'hash/simple';
-    assert.ok(visible(show));
+    isVisible(assert, show);
     location.hash = '';
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
 
     show = document.querySelector('[vista="simple+!hash+index"]');
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
     location.hash = 'hash/simple';
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
     location.hash = 'simple';
-    assert.ok(visible(show));
+    isVisible(assert, show);
     location.hash = '';
-    assert.ok(!visible(show));
+    isNotVisible(assert, show);
   });
 
 }());
