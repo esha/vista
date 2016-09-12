@@ -1,4 +1,4 @@
-/*! Vista - v3.0.0 - 2016-06-23
+/*! Vista - v3.0.0 - 2016-09-12
 * https://github.com/esha/vista
 * Copyright (c) 2016 ESHA Research; Licensed  */
 (function(window, document, location, history) {
@@ -28,21 +28,41 @@
         _.update();
     },
     html = document.documentElement,
+    bounds = '^./\\?=&#$'.split(''),
     _ = {
         version: '3.0.0',
+        isBoundary: function(char) {
+            return bounds.indexOf(char) >= 0;
+        },
         define: function(name, test, style) {
             if (init) {
                 init(_);
             }
+            var source = test;
             switch (typeof test) {
                 case "undefined":
                     test = name;
                     /* falls through */
                 case "string":
-                    test = new RegExp(test);
+                    if (!_.isBoundary(test.charAt(0))) {
+                        test = '(^|/|\\?|=|&|#)' + test;
+                    }
+                    if (!_.isBoundary(test.charAt(test.length - 1))) {
+                        test += '($|/|\\?|=|&|#|\.)';
+                    }
+                    try {
+                        source = { initial: source, actual: test };
+                        test = new RegExp(test);
+                    } catch (e) {
+                        test = function() {
+                            window.console.error('Invalid Vista definition: ', name, source, e);
+                        };
+                        break;
+                    }
                     /* falls through */
                 case "object":
                     test = test.test.bind(test);// haha!
+                    test.source = source;
             }
             _.tests[name] = test;
             _.style.textContent += _._rules(name, style);
