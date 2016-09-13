@@ -1,10 +1,24 @@
-# Vista
+#### Vista uses generated CSS to provide declarative, URL-driven control of when (or how) any elements in your page are displayed, right from your HTML.
 
-Vista provides declarative, URL-driven control of element display. In a typical webapp, each URL loads a different page of HTML elements. In a single page webapp, all the HTML elements live in the same page but only some are displayed at any one time. Vista makes it easy to restore that meaningful relationship between the URL and the elements that are displayed. After all, a single-page application should still be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). While this display control is usually a subtask of "routers" and "view controllers", such approaches bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is can be constraining in the best cases and often is simply unnecessary. Sometimes it is cleaner to leave control of HTML to your HTML, even in a single page app.
+### A Quick Example
 
-Vista enables you to manage element display in a way that is simple, declarative, decoupled, and fast. Just add a `vista="part-of-url-here"` attribute to your element, and it will only be displayed when the URL matches. Nothing else needed. Of course, if you want more complex URL tests, Vista also provides easy ways to declare those in your markup too. There are no concerns about view heirarchy/containers/renderers/lifecycles. No manual display toggling. No extra CSS or JavaScript to write. There are no routers or event listeners to configure. You can use Vista with frameworks or on its own. It has no dependencies, no known conflicts, and few constraints.
+```html
+<p vista="foo">Foo</p><!-- hidden while no section of the URL is 'foo' -->
+<p vista="!foo">Bar</p><!-- visible while no section of the URL is 'foo' -->
+<a href="#foo">Show Foo And Hide Bar</a>
+<a href="#notjustfoo">Hide Foo And Show Bar</a>
+```
+
+# What This Is For
+
+In a typical webapp, the URL loads a different page of HTML elements. But in a single page webapp, all elements live in the same page but only some are displayed at any one time. Vista makes it easy, even necessary, to keep that meaningful relationship between the URL and the elements that are displayed. After all, if you use the URL to control element display, you can't forget to update the URL. This means you always support the back button, deep linking, and bookmarks.
+
+Vista lets you manage element display in a way that is simple, declarative, decoupled, and fast. Just add a vista="url-section-here" attribute to your element, and it will only be displayed when the URL has a section like that. Nothing else needed. If you want more complex URL tests, Vista lets you declare those in markup too. There's no manual display toggling, nor custom CSS, nor extra JavaScript to write. Vista works with frameworks or on its own. It has no dependencies, no known conflicts, and few constraints.
+
+Try it out. In many cases, dynamic element display (unlike dynamic element content) is better managed in markup (which is display code, after all), without tight JavaScript coupling to routers, controllers, or renderers. With Vista, it's only between the URL and your <div>. This naturally and easily pushes workflow through the URL, enforcing good URL management, letting links be links and sticking to the declarative style that is natural to the web.
 
 ## Getting Started
+
 Download the [production version][min] or the [development version][max]. [![Build Status](https://travis-ci.org/esha/vista.png?branch=master)](https://travis-ci.org/esha/vista)  
 [Bower][bower]: `bower install vista`  
 [NPM][npm]: `npm install vista`   
@@ -18,28 +32,18 @@ Download the [production version][min] or the [development version][max]. [![Bui
 
 ## Documentation
 
-### A Quick Example
-
-```html
-<p vista="foo">Foo</p><!-- hidden while no section of the URL is 'foo' -->
-<p vista="!foo">Bar</p><!-- visible while no section of the URL is 'foo' -->
-<a href="#foo">Show Foo And Hide Bar</a>
-<a href="#notjustfoo">Hide Foo And Show Bar</a>
-```
-
-
 ### Defining Your Views
 
-"Views" with Vista are defined by a name and a "URL test" for the current `location.href` (optionally, a display style too). In many cases, that name and the test can be the same value, as in the quick example above. In other cases, you'll want a more complex URL test and need a simpler logical name.
+"Views" with Vista are defined by a name and a "test" for the current URL (optionally, a display style too). In many cases, that name and the test can be the same value, as in the quick example above. In other cases, you'll want a more complex URL test and need a simpler logical name.
 
 #### Declarative Definition (best way):  
 
-Basic version (element is visible when URL like 'http://example.com/simple.html'):  
+Basic version (element is visible under a URL like 'http://example.com/simple.html'):  
 ```html
 <div vista="simple">...</div>
 ```  
 
-Named test (visible when URL like 'http://example.com?test_this=true'):  
+Named test (visible under a URL like 'http://example.com?test_this=true'):  
 ```html
 <meta itemprop="vista" define="name=test_this">
 <div vista="name">...</div>
@@ -87,15 +91,15 @@ To show an element only when a test passes:
 
 `<button vista="nameOfTest">`
 
-To show an element only when a test fails:
+To show an element only when a test *fails*:
 
 `<span vista="!nameOfTest">`
 
-To show an element when any of several tests pass:
+To show an element when *any* of several tests pass:
 
 `<a vista="my_test myOtherTest">`
 
-To show an element when all of several tests pass:
+To show an element when *all* of several tests pass:
 
 `<div vista="nameOfTest+my_test">`
 
