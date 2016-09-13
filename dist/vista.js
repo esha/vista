@@ -1,4 +1,4 @@
-/*! Vista - v3.1.0 - 2016-09-12
+/*! Vista - v3.1.1 - 2016-09-13
 * https://github.com/esha/vista
 * Copyright (c) 2016 ESHA Research; Licensed  */
 (function(window, document, location, history) {
@@ -30,7 +30,7 @@
     html = document.documentElement,
     bounds = '^./\\?=&#$'.split(''),
     _ = {
-        version: '3.1.0',
+        version: '3.1.1',
         isBoundary: function(char) {
             return bounds.indexOf(char) >= 0;
         },
@@ -48,7 +48,7 @@
                         test = '(^|/|\\?|=|&|#)' + test;
                     }
                     if (!_.isBoundary(test.charAt(test.length - 1))) {
-                        test += '($|/|\\?|=|&|#|\.)';
+                        test += '($|/|\\?|=|&|#|\\.)';
                     }
                     try {
                         source = { initial: source, actual: test };
