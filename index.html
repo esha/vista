@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Vista - ESHA Research</title>
+    <title>Vista by esha</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -16,111 +16,156 @@
     <div class="wrapper">
       <header>
         <h1>Vista</h1>
-        <p>Really easy, CSS-based, location-driven display control for your elements.</p>
+        <p>Declarative, URL-driven display control.</p>
 
         <p class="view"><a href="https://github.com/esha/vista">View the Project on GitHub <small>esha/vista</small></a></p>
+
 
         <ul>
           <li><a href="https://github.com/esha/vista/zipball/master">Download <strong>ZIP File</strong></a></li>
           <li><a href="https://github.com/esha/vista/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/esha/vista">View On <strong>GitHub</strong></a></li>
         </ul>
-
-        <p>
-          A Little Demo
-          <a class="jsbin-embed" href="http://jsbin.com/komerire/20/embed?output">Vista Demo</a>
-          <script src="http://static.jsbin.com/js/embed.js"></script></script>
-        </p>
       </header>
       <section>
-        <p>Vista gives you automatic, declarative, location-based control of element display.</p>
-
-<p>If you are developing a single-page application (of any degree of complexity), you should be updating the browser's location for each significant state change in the application (to allow the back button, bookmarking, deep-linking, etc). This generally coincides with showing and hiding of page elements, usually a subtask of "routers" and "view managers". Such approaches needlessly bind the simple on/off of elements to more involved and/or encapsulated processes, creating a tight coupling of display and logic that is sometimes complex, opaque, and/or limiting.</p>
-
-<p>Vista makes "view management" simple, declarative, and decoupled. You need only define the tests (<code>&lt;meta itemprop="vista" define="name=regexp"/&gt;</code> or <code>Vista.define(name, regExpOrFn)</code>) and stick <code>show-{name}</code> or <code>hide-{name}</code> classes on your elements. No concerns about view heirarchy/containers/renderers. No manual display toggling. No extra CSS to write. No routers or event listeners to configure. You can use it with your routers or view renderers or without them. No dependencies. No conflicts. No constraints.</p>
-
-<h2>
-<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
-
-<p>Download the <a href="https://rawgit.com/esha/vista/master/dist/vista.min.js">production version</a> or the <a href="https://raw.github.com/esha/vista/master/dist/vista.js">development version</a>. <a href="https://travis-ci.org/esha/vista"><img src="https://travis-ci.org/esha/vista.png?branch=master" alt="Build Status"></a><br><a href="http://bower.io/">Bower</a>: <code>bower install vista</code><br><a href="https://npmjs.org/package/vista">NPM</a>: <code>npm install vista</code><br><a href="http://component.io/">Component</a>: <code>component install esha/vista</code>  </p>
-
-<h2>
-<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+        <h4>
+<a id="vista-uses-generated-css-to-provide-declarative-url-driven-control-of-when-or-how-any-elements-in-your-page-are-displayed" class="anchor" href="#vista-uses-generated-css-to-provide-declarative-url-driven-control-of-when-or-how-any-elements-in-your-page-are-displayed" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vista uses generated CSS to provide declarative, URL-driven control of when (or how) any elements in your page are displayed.</h4>
 
 <h3>
-<a name="define" class="anchor" href="#define"><span class="octicon octicon-link"></span></a>Define</h3>
+<a id="a-quick-example" class="anchor" href="#a-quick-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A Quick Example</h3>
 
-<p>Declarative (best way):  </p>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">p</span> <span class="pl-e">vista</span>=<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>&gt;Foo&lt;/<span class="pl-ent">p</span>&gt;<span class="pl-c">&lt;!-- hidden while no section of the URL is 'foo' --&gt;</span>
+&lt;<span class="pl-ent">p</span> <span class="pl-e">vista</span>=<span class="pl-s"><span class="pl-pds">"</span>!foo<span class="pl-pds">"</span></span>&gt;Bar&lt;/<span class="pl-ent">p</span>&gt;<span class="pl-c">&lt;!-- visible while no section of the URL is 'foo' --&gt;</span>
+&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>#foo<span class="pl-pds">"</span></span>&gt;Show Foo And Hide Bar&lt;/<span class="pl-ent">a</span>&gt;
+&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>#notjustfoo<span class="pl-pds">"</span></span>&gt;Hide Foo And Show Bar&lt;/<span class="pl-ent">a</span>&gt;</pre></div>
 
-<p><code>&lt;meta itemprop="vista" define="name=test otherName=otherTest nameAsTest"&gt;</code>  </p>
+<h2>
+<a id="wait-what-is-this-for" class="anchor" href="#wait-what-is-this-for" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Wait, What Is This For?</h2>
 
-<p>Programmatic (when you need to):  </p>
+<p>In a typical webapp, the URL loads a different page of HTML elements. But in a single page webapp, all elements live in the same page but only some are displayed at any one time. Vista makes it easy, even necessary, to keep that meaningful relationship between the URL and the elements that are displayed. After all, if you use the URL to control element display, you can't forget to update the URL. This means you always support the back button, deep linking, and bookmarks.</p>
 
-<p><code>Vista.define(name[, test])</code>  </p>
+<p>Vista lets you manage element display in a way that is simple, declarative, decoupled, and fast. Just add a <code>vista="url-section-here"</code> attribute to your element, and it will only be displayed when the URL has a section like that. Nothing else needed. If you want more complex URL tests, Vista lets you declare those in markup too. There's no manual display toggling, nor custom CSS, nor extra JavaScript to write. Vista works with frameworks or on its own. It has no dependencies, no known conflicts, and few constraints.</p>
 
-<p>The name will be used to generate the pertinent CSS display styles. The test will be turned into a regular expression that is tested against the current URL of the page. Or, if you are using <code>Vista.define(name, test)</code>, the test may be a RegExp instance or Function. If, via either definition method, the test is omitted, then the name itself will be used as the test expression (which is often sufficient). Here are some definition examples:</p>
+<p>Try it out. In many cases, dynamic element display (unlike dynamic element content) is better managed in markup (which is display code, after all), without tight JavaScript coupling to routers, controllers, or renderers. With Vista, it's only between the URL and your <code>&lt;div&gt;</code>. This naturally and easily pushes workflow through the URL, enforcing good URL management, letting links be links and sticking to the declarative style that is natural to the web.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="nx">Vista</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">'reports'</span><span class="p">);</span>
-<span class="nx">Vista</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">'hasChart'</span><span class="p">,</span> <span class="sr">/#.*(pie|bar|line)/</span><span class="p">);</span>
-<span class="nx">Vista</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">'special'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// return a truthy value to pass the test or falsey to fail</span>
-    <span class="k">return</span> <span class="nx">url</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">'special=true'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">user</span><span class="p">.</span><span class="nx">settings</span><span class="p">(</span><span class="s1">'special'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h2>
 
-<div class="highlight highlight-html"><pre><span class="nt">&lt;head&gt;</span>
-  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"vista"</span> <span class="na">content=</span><span class="s">"reports hasChart=#(pie|bar|line) query=\?q=.+"</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"../bower_components/vista/dist/vista.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-...
-</pre></div>
+<p>Download the <a href="https://raw.github.com/esha/vista/master/dist/vista.min.js">production version</a> or the <a href="https://raw.github.com/esha/vista/master/dist/vista.js">development version</a>. <a href="https://travis-ci.org/esha/vista"><img src="https://travis-ci.org/esha/vista.png?branch=master" alt="Build Status"></a><br>
+<a href="http://bower.io/">Bower</a>: <code>bower install vista</code><br>
+<a href="https://npmjs.org/package/vista">NPM</a>: <code>npm install vista</code><br>
+<a href="http://component.io/">Component</a>: <code>component install esha/vista</code>  </p>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h2>
 
 <h3>
-<a name="use" class="anchor" href="#use"><span class="octicon octicon-link"></span></a>Use</h3>
+<a id="defining-your-views" class="anchor" href="#defining-your-views" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Defining Your Views</h3>
 
-<p>To show an element only when the test passes:  </p>
+<p>"Views" with Vista are defined by a name and a "test" for the current URL (optionally, a display style too). In many cases, that name and the test can be the same value, as in the quick example above. In other cases, you'll want a more complex URL test with a shorter logical name.</p>
 
-<p><code>class="show-{name}"</code></p>
+<h4>
+<a id="declarative-definition-best-way" class="anchor" href="#declarative-definition-best-way" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Declarative Definition (best way):</h4>
 
-<p>or hide an element only when a test passes:</p>
+<p>Basic version (element is visible when URL like '<a href="http://example.com/simple.html">http://example.com/simple.html</a>'):  </p>
 
-<p><code>class="hide-{name}"</code></p>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">vista</span>=<span class="pl-s"><span class="pl-pds">"</span>simple<span class="pl-pds">"</span></span>&gt;...&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
 
-<p>The needed CSS rules are generated and applied automatically for you. Here are some usage examples:</p>
+<p>Named test (visible when URL like '<a href="http://example.com?test_this=true">http://example.com?test_this=true</a>'):  </p>
 
-<div class="highlight highlight-html"><pre><span class="nt">&lt;body&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"show-reports"</span><span class="nt">&gt;</span>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">meta</span> <span class="pl-e">itemprop</span>=<span class="pl-s"><span class="pl-pds">"</span>vista<span class="pl-pds">"</span></span> <span class="pl-e">define</span>=<span class="pl-s"><span class="pl-pds">"</span>name=test_this<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">vista</span>=<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>&gt;...&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<p>Add a 2nd named, regexp test and a custom style:  </p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">meta</span> <span class="pl-e">itemprop</span>=<span class="pl-s"><span class="pl-pds">"</span>vista<span class="pl-pds">"</span></span> <span class="pl-e">define</span>=<span class="pl-s"><span class="pl-pds">"</span>name=test_this grid=layout=grid<span class="pl-pds">"</span></span> <span class="pl-e">style</span>=<span class="pl-s"><span class="pl-pds">"</span>flex<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">vista</span>=<span class="pl-s"><span class="pl-pds">"</span>grid<span class="pl-pds">"</span></span>&gt;...&lt;/<span class="pl-ent">div</span>&gt;<span class="pl-c">&lt;!-- 'display: flex', when URL like http://example.com?layout=grid&amp;a=1 --&gt;</span>
+&lt;<span class="pl-ent">span</span> <span class="pl-e">vista</span>=<span class="pl-s"><span class="pl-pds">"</span>!name<span class="pl-pds">"</span></span>&gt;...&lt;/<span class="pl-ent">span</span>&gt;<span class="pl-c">&lt;!-- 'display: flex', when URL lacks a 'test_this' section --&gt;</span></pre></div>
+
+<p>As you can see, multiple definitions can share the same <code>&lt;meta itemprop="vista"&gt;</code> element, as long as they are space-delimited.</p>
+
+<p>It may be helpful to know that in the common case, where no custom display style is specified, the default style used is <code>initial</code> (with <code>block</code> as fallback for browsers that need it).  </p>
+
+<p>Also, note that definitions never need to be declared next to the elements they are controlling.
+Your <code>&lt;meta itemprop="vista"&gt;</code> definitions can be placed anywhere. The <code>&lt;head&gt;</code> element is recommended.</p>
+
+<h4>
+<a id="programmatic-definition-if-you-really-must" class="anchor" href="#programmatic-definition-if-you-really-must" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Programmatic Definition (if you really must):</h4>
+
+<p>The provided API is <code>Vista.define(name[, test[, style]])</code>. Here are some examples:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// simple view, where the name and URL test value are the same</span>
+<span class="pl-smi">Vista</span>.<span class="pl-en">define</span>(<span class="pl-s"><span class="pl-pds">'</span>reports<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// view with full RegExp to test if URL's full hash equals a chart</span>
+<span class="pl-smi">Vista</span>.<span class="pl-en">define</span>(<span class="pl-s"><span class="pl-pds">'</span>hasChart<span class="pl-pds">'</span></span>,<span class="pl-sr"> <span class="pl-pds">/</span>#(pie<span class="pl-k">|</span>bar)<span class="pl-k">$</span><span class="pl-pds">/</span></span>);
+
+<span class="pl-c">// view with a custom test function to which the URL is passed and an alternate style</span>
+<span class="pl-smi">Vista</span>.<span class="pl-en">define</span>(<span class="pl-s"><span class="pl-pds">'</span>special<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">url</span>) {
+    <span class="pl-c">// return a truthy value to pass the test or falsey to fail</span>
+    <span class="pl-k">return</span> <span class="pl-smi">url</span>.<span class="pl-c1">indexOf</span>(<span class="pl-s"><span class="pl-pds">'</span>special<span class="pl-pds">'</span></span>) <span class="pl-k">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">||</span> <span class="pl-smi">localStorage</span>.<span class="pl-c1">getItem</span>(<span class="pl-s"><span class="pl-pds">'</span>special<span class="pl-pds">'</span></span>);
+}, <span class="pl-s"><span class="pl-pds">'</span>inline-block<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Of course, only the last one actually must be done with JavaScript. Functions may not be defined as tests via markup at this time, though they may be supported (via reference) eventually.</p>
+
+<p>Please note that when you define new tests programmatically, they are not automatically applied until the next time the location is updated. To force an immediate re-evaluation of all tests, call <code>Vista.update()</code>.</p>
+
+<h3>
+<a id="using-your-views" class="anchor" href="#using-your-views" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using Your Views</h3>
+
+<p>To show an element only when a test passes:  </p>
+
+<p><code>&lt;button vista="nameOfTest"&gt;</code></p>
+
+<p>To show an element only when a test fails:</p>
+
+<p><code>&lt;span vista="!nameOfTest"&gt;</code></p>
+
+<p>To show an element when any of several tests pass:</p>
+
+<p><code>&lt;a vista="my_test myOtherTest"&gt;</code></p>
+
+<p>To show an element when all of several tests pass:</p>
+
+<p><code>&lt;div vista="nameOfTest+my_test"&gt;</code></p>
+
+<p>The needed CSS rules are generated and applied automatically for you. Here's another small usage example:</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">body</span>&gt;
+  &lt;<span class="pl-ent">div</span> <span class="pl-e">vista</span>=<span class="pl-s"><span class="pl-pds">"</span>reports<span class="pl-pds">"</span></span>&gt;
     Reports would go here, of course.
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!-- hide the submenu to make more room for the chart --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"submenu"</span> <span class="na">class=</span><span class="s">"hide-hasChart"</span><span class="nt">&gt;</span>
+  &lt;/<span class="pl-ent">div</span>&gt;
+  <span class="pl-c">&lt;!-- hide the submenu to make more room for the chart --&gt;</span>
+  &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>submenu<span class="pl-pds">"</span></span> <span class="pl-e">vista</span>=<span class="pl-s"><span class="pl-pds">"</span>!hasChart<span class="pl-pds">"</span></span>&gt;
     Sub-menu is here...
-  <span class="nt">&lt;/div&gt;</span>
+  &lt;/<span class="pl-ent">div</span>&gt;
   ...
-<span class="nt">&lt;/body&gt;</span>
-</pre></div>
+&lt;/<span class="pl-ent">body</span>&gt;</pre></div>
 
 <h3>
-<a name="advanced" class="anchor" href="#advanced"><span class="octicon octicon-link"></span></a>"Advanced" Use</h3>
+<a id="implementation" class="anchor" href="#implementation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implementation</h3>
 
-<p>Force immediate evaluation of all test statuses (i.e. after you define new ones, but before a url change):</p>
+<p>The names of each defined view are used to generate the needed CSS rules for controlling the display of related <code>[vista~="name"]</code> elements. All declarative URL tests are turned into regular expressions. If the declared test starts/ends with anything that looks like URL format chars (i.e. <code>./\?=&amp;#</code>) or regexp start/end chars (<code>^</code> and <code>$</code>), then that end of the test is left as-is, otherwise, the end will be pre/postfixed with regexp to match those relevant chars. This is done to ensure that full URL section matches are the default (avoiding false positives like "color=reddish" when you only wanted "color=red"). The resulting regexps are tested against the current URL of the page at page load and any time that the location is updated. As shown above, if you are using <code>Vista.define(name, test[, style])</code>, the test parameter will directly accept a RegExp instance or Function. If, via either declarative or programmatic definition, the test is omitted, then the name itself is always used as the test expression. Most users will find this sufficient in the majority of uses.</p>
 
-<p><code>Vista.update();</code></p>
+<p>Upon page load, location changes, or calls to <code>Vista.update()</code>, all tests are evaluated. For each one, a correlating <code>vista-name</code> attribute on the <code>&lt;html&gt;</code> element is toggled, according to whether the test returns a truthy or falsey value. </p>
+
+<h3>
+<a id="advanced-features" class="anchor" href="#advanced-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>"Advanced" Features</h3>
 
 <p>Temporarily force a particular status (i.e. override the latest update):</p>
 
 <p><code>Vista.toggle(name[, active]);</code></p>
 
-<p>Add additional elements that should be <code>display: inline-block;</code> instead of <code>display: block;</code> for <em>subsequent</em> definitions:</p>
+<p>Test whether a particular status is active or not:</p>
 
-<p><code>Vista.inline.push('x-inline-element');</code></p>
+<p><code>Vista.active(name);</code></p>
 
-<p>Write CSS rules that use the ".vista-{name}" classes toggled on the document body as the location changes:</p>
+<p>Write your own CSS rules that use the "[vista-name]" attributes toggled on the document element as the location changes:</p>
 
-<p><code>.vista-{name} .my-thing { ... }</code></p>
+<p><code>html[vista-name] .my-thing { ... }</code></p>
 
 <h2>
-<a name="release-history" class="anchor" href="#release-history"><span class="octicon octicon-link"></span></a>Release History</h2>
+<a id="release-history" class="anchor" href="#release-history" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Release History</h2>
 
 <ul>
 <li>2014-04-10 <a href="https://github.com/esha/vista/tree/0.1.0">v0.1.0</a> (first public release)</li>
@@ -128,23 +173,29 @@
 <li>2014-04-16 <a href="https://github.com/esha/vista/tree/0.2.0">v0.2.0</a> (flip toggle classes to vista-{name})</li>
 <li>2014-04-24 <a href="https://github.com/esha/vista/tree/0.2.1">v0.2.1</a> (watch replaceState calls)</li>
 <li>2014-08-25 <a href="https://github.com/esha/vista/tree/1.0.0">v1.0.0</a> (multiple &lt;meta itemprop="vista" define="... instead of single &lt;meta name="vista" content...)</li>
+<li>2014-09-23 <a href="https://github.com/esha/vista/tree/1.1.0">v1.1.0</a> (Vista.active(name), toggle fix)</li>
+<li>2014-10-20 <a href="https://github.com/esha/vista/tree/2.0.1">v2.0.1</a> (Use attributes instead of classes, add configurable display style, '=' now allowed in meta definitions)</li>
+<li>2015-01-20 <a href="https://github.com/esha/vista/tree/2.1.1">v2.1.1</a> (Support shortcut define-and-use syntax, add Vista.defined(name) method)</li>
+<li>2016-06-23 <a href="https://github.com/esha/vista/tree/3.0.0">v3.0.0</a> (Removed Vista.defined, support compound+definition+test syntax, update dev deps, misc refactoring)</li>
+<li>2016-09-12 <a href="https://github.com/esha/vista/tree/3.1.0">v3.1.0</a> (Match full URL sections by default, via smart pre/postfix of tests)</li>
 </ul>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/esha">ESHA Research, Inc</a></p>
+        <p>This project is maintained by <a href="https://github.com/esha">esha</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    <script type="text/javascript">
-      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
-      try {
-        var pageTracker = _gat._getTracker("UA-42479338-3");
-      pageTracker._trackPageview();
-      } catch(err) {}
-    </script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-42479338-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
