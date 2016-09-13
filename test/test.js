@@ -154,6 +154,12 @@
     assert.ok(Vista.active('hash'), 'hash should be active');
     isVisible(assert, show, 'hash element is not visible when hash is '+location.hash);
     isNotVisible(assert, hide, '!hash element is visible when hash is '+location.hash);
+    
+    // tests should match full URL section, not just partial section
+    location.hash = 'hashes';
+    assert.equal(Vista.active('hash'), false, 'hash should not be active');
+    isNotVisible(assert, show);
+    isVisible(assert, hide);
   });
 
   QUnit.test('body meta-tag definitions', function(assert) {

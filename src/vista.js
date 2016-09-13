@@ -45,7 +45,7 @@
                         test = '(^|/|\\?|=|&|#)' + test;
                     }
                     if (!_.isBoundary(test.charAt(test.length - 1))) {
-                        test += '($|/|\\?|=|&|#|\.)';
+                        test += '($|/|\\?|=|&|#|\\.)';
                     }
                     try {
                         source = { initial: source, actual: test };
