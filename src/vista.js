@@ -4,7 +4,6 @@
     var init = function(_) {
         init = false;
 
-        _.tests = {};
         _.style = document.createElement('style');
         document.head.appendChild(_.style);
 
@@ -28,6 +27,7 @@
     bounds = '^./\\?=&#$'.split(''),
     _ = {
         version: '<%= pkg.version %>',
+        tests: {},
         isBoundary: function(char) {
             return bounds.indexOf(char) >= 0;
         },
