@@ -1,13 +1,12 @@
-/*! Vista - v3.1.1 - 2016-09-13
+/*! Vista - v3.1.2 - 2017-02-27
 * https://github.com/esha/vista
-* Copyright (c) 2016 ESHA Research; Licensed  */
+* Copyright (c) 2017 ESHA Research; Licensed  */
 (function(window, document, location, history) {
     'use strict';
 
     var init = function(_) {
         init = false;
 
-        _.tests = {};
         _.style = document.createElement('style');
         document.head.appendChild(_.style);
 
@@ -30,7 +29,8 @@
     html = document.documentElement,
     bounds = '^./\\?=&#$'.split(''),
     _ = {
-        version: '3.1.1',
+        version: '3.1.2',
+        tests: {},
         isBoundary: function(char) {
             return bounds.indexOf(char) >= 0;
         },

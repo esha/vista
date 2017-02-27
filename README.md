@@ -148,7 +148,7 @@ Write your own CSS rules that use the "[vista-name]" attributes toggled on the d
 * 2014-10-20 [v2.0.1][] (Use attributes instead of classes, add configurable display style, '=' now allowed in meta definitions)
 * 2015-01-20 [v2.1.1][] (Support shortcut define-and-use syntax, add Vista.defined(name) method)
 * 2016-06-23 [v3.0.0][] (Removed Vista.defined, support compound+definition+test syntax, update dev deps, misc refactoring)
-* 2016-09-12 [v3.1.1][] (Match full URL sections by default, via smart pre/postfix of tests)
+* 2017-01-27 [v3.1.2][] (Match full URL sections by default, via smart pre/postfix of tests)
 
 [v0.1.0]: https://github.com/esha/vista/tree/0.1.0
 [v0.1.1]: https://github.com/esha/vista/tree/0.1.1
@@ -159,4 +159,4 @@ Write your own CSS rules that use the "[vista-name]" attributes toggled on the d
 [v2.0.1]: https://github.com/esha/vista/tree/2.0.1
 [v2.1.1]: https://github.com/esha/vista/tree/2.1.1
 [v3.0.0]: https://github.com/esha/vista/tree/3.0.0
-[v3.1.1]: https://github.com/esha/vista/tree/3.1.1
+[v3.1.2]: https://github.com/esha/vista/tree/3.1.2
