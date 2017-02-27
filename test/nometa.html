@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Vista Definitionless Test Suite</title>
+  <!-- Load local QUnit. -->
+  <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" media="screen">
+  <script src="../bower_components/qunit/qunit/qunit.js"></script>
+  <!-- Load local lib and tests. -->
+  <script src="../dist/vista.js"></script>
+  <script src="utils.js"></script>
+  <script>
+  QUnit.module('nometa');
+
+  QUnit.test('Vista still functions', function(assert) {
+    isVisible(assert, document.querySelector('[vista="nometa"]'));
+    isNotVisible(assert, document.querySelector('[vista="hideme"]'));
+  });
+
+  </script>
+</head>
+<body>
+  <div id="qunit">
+  </div>
+  <div id="qunit-fixture">
+    <div vista="nometa">vista="nometa"</div>
+    <div vista="hideme">vista="hideme"</div>
+  </div>
+</body>
+</html>
