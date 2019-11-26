@@ -2,6 +2,12 @@
 
 module.exports = function(grunt) {
 
+  // Load grunt tasks automatically
+  require('load-grunt-tasks')(grunt);
+
+  // Time how long tasks take. Can help when optimizing build times
+  require('time-grunt')(grunt);
+
   // Project configuration.
   grunt.initConfig({
     // Metadata.
@@ -44,8 +50,20 @@ module.exports = function(grunt) {
         dest: 'dist/<%= pkg.name %>.min.js'
       },
     },
+    connect: {
+      test: {
+        options: {
+          base: '.',
+          port: 9000
+        }
+      }
+    },
     qunit: {
-      files: ['test/**/*.html']
+      options: {
+        timeout: 5000,
+        httpBase: 'http://localhost:9000'
+      },
+      src: ['test/*.html']
     },
     jshint: {
       gruntfile: {
@@ -83,16 +101,16 @@ module.exports = function(grunt) {
     },
   });
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadTasks('tasks');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'clean', 'concat', 'uglify', 'qunit', 'compress']);
-
+  grunt.registerTask('default', [
+    'jshint',
+    'clean',
+    'concat',
+    'uglify',
+    'connect',
+    'qunit',
+    'compress'
+  ]);
 };
