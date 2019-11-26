@@ -1,6 +1,6 @@
-/*! Vista - v3.1.3 - 2017-03-27
+/*! Vista - v3.1.3 - 2019-11-26
 * https://github.com/esha/vista
-* Copyright (c) 2017 ESHA Research; Licensed  */
+* Copyright (c) 2019 ESHA Research; Licensed  */
 (function(window, document, location, history) {
     'use strict';
 
